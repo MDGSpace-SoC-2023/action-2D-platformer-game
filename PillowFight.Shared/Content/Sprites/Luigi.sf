@@ -1,0 +1,29 @@
+{
+  "textureAtlas": {
+    "texture": "PlumberFellasSpritesheet.png",
+    "regionWidth": 32,
+    "regionHeight": 32
+  },
+  "cycles": {
+    "run": {
+      "frames": [111,112,113,114,115,116],
+      "isLooping": false,
+      "frameDuration": 0.07
+    },
+    "stand": {
+      "frames": [101],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "jump": {
+      "frames": [103],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "turn": {
+      "frames": [104],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}

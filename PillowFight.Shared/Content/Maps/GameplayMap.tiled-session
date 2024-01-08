@@ -1,0 +1,35 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "DemoMap.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "DemoMap.tmx": {
+            "scale": 1.4625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 304.6153846153846,
+                "y": 192.47863247863245
+            }
+        },
+        "ForestTileset.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "C:/Users/xyukt/source/repos/PillowFight/PillowFight.Shared/Content/Maps",
+    "map.height": 12,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 19,
+    "openFiles": [
+        "DemoMap.tmx"
+    ],
+    "project": "GameplayMap.tiled-project",
+    "recentFiles": [
+        "DemoMap.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

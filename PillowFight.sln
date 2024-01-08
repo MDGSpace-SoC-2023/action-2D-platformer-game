@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PillowFight.Shared", "PillowFight.Shared\PillowFight.Shared.shproj", "{A0CDBD0E-3A41-42B7-9425-A838BC2C7383}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PillowFight.GL", "PillowFight.GL\PillowFight.GL.csproj", "{205AB1F3-CEF0-473C-BCAC-5F7EA47A12DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{205AB1F3-CEF0-473C-BCAC-5F7EA47A12DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205AB1F3-CEF0-473C-BCAC-5F7EA47A12DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205AB1F3-CEF0-473C-BCAC-5F7EA47A12DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205AB1F3-CEF0-473C-BCAC-5F7EA47A12DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1821574-2F95-4250-A5CF-4B5D10C7BA66}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PillowFight.Shared\PillowFight.Shared.projitems*{205ab1f3-cef0-473c-bcac-5f7ea47a12da}*SharedItemsImports = 5
+		PillowFight.Shared\PillowFight.Shared.projitems*{a0cdbd0e-3a41-42b7-9425-a838bc2c7383}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
