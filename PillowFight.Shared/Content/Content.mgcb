@@ -3,7 +3,7 @@
 
 /outputDir:bin/$(Platform)
 /intermediateDir:obj/$(Platform)
-/platform:Windows
+/platform:DesktopGL
 /config:
 /profile:Reach
 /compress:False
@@ -11,6 +11,7 @@
 #-------------------------------- References --------------------------------#
 
 /reference:MonoGame.Extended.Content.Pipeline.dll
+/reference:Monogame.Aseprite.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -26,12 +27,12 @@
 /processorParam:DebugMode=Auto
 /build:Effects/HUDHealthShader.fx
 
-#begin Fonts/File.spritefont
+#begin Fonts/Arial.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/File.spritefont;Fonts/Arial.spritefont
+/build:Fonts/Arial.spritefont
 
 #begin Maps/Demo.tmx
 /importer:TiledMapImporter
@@ -59,6 +60,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Maps/Tileset.png
+
+#begin Sprites/Cloud.aseprite
+/importer:AsepriteFileContentImporter
+/processor:AsepriteFileContentProcessor
+/build:Sprites/Cloud.aseprite
+
+#begin Sprites/Luigi.aseprite
+/importer:AsepriteFileContentImporter
+/processor:AsepriteFileContentProcessor
+/build:Sprites/Luigi.aseprite
+
+#begin Sprites/Mario.aseprite
+/importer:AsepriteFileContentImporter
+/processor:AsepriteFileContentProcessor
+/build:Sprites/Mario.aseprite
 
 #begin Sprites/PlumberFellasSpritesheet.png
 /importer:TextureImporter

@@ -1,7 +1,6 @@
 ﻿using System;
 using DefaultEcs;
 using DefaultEcs.System;
-using MonoGame.Extended.Sprites;
 using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
@@ -17,7 +16,6 @@ namespace PillowFight.Shared.Systems
                 .With<ModifiableComponent<ItemPhysics>>()
                 .With<ModifiableComponent<CharacterPhysics>>()
                 .With<ItemStatus>()
-                .With<AnimatedSprite>()
                 .AsSet())
         {
         }
@@ -31,7 +29,7 @@ namespace PillowFight.Shared.Systems
             ref var acceleration = ref entity.Get<AccelerationComponent>();
             ref var itemPhysics = ref entity.Get<ModifiableComponent<ItemPhysics>>();
             ref var characterPhysics = ref entity.Get<ModifiableComponent<CharacterPhysics>>();
-            ref var sprite = ref entity.Get<AnimatedSprite>();
+            ref var sprite = ref entity.Get<AsepriteSprite>();
 
             if (input.CurrentState.IsKeyDown(keys.LeftKey))
             {
@@ -40,7 +38,7 @@ namespace PillowFight.Shared.Systems
 
                 if (status.Airborne)
                 {
-                    // sprite.Play("jump");
+                    sprite.Play(1);
                     if (shouldAccelerate)
                         velocity.X = Math.Max(-characterPhysics.Modified.RunVelocity,
                             velocity.X - characterPhysics.Modified.AirRunAcceleration * deltaTime);
@@ -48,9 +46,9 @@ namespace PillowFight.Shared.Systems
                 else
                 {
                     if (velocity.X * acceleration.X < 0)
-                        sprite.Play("turn");
+                        sprite.Play(3);
                     else 
-                        sprite.Play("run");
+                        sprite.Play(4);
 
                     if (shouldAccelerate)
                         velocity.X = Math.Max(-characterPhysics.Modified.RunVelocity,
@@ -73,9 +71,9 @@ namespace PillowFight.Shared.Systems
                 else
                 {
                     if (velocity.X * acceleration.X < 0)
-                        sprite.Play("turn");
+                        sprite.Play(3);
                     else 
-                        sprite.Play("run");
+                        sprite.Play(4);
 
                     if (shouldAccelerate)
                         velocity.X = Math.Min(characterPhysics.Modified.RunVelocity,
@@ -84,10 +82,15 @@ namespace PillowFight.Shared.Systems
             }
             else
             {
-                sprite.Play("stand");
+                sprite.Play(0);
             }
 
-            if (status.Airborne) sprite.Play("jump");
+            if (input.CurrentState.IsKeyDown(keys.Ability2Key) && status.Falling) {
+                itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y * characterPhysics.Modified.JumpGravityMultiplier;
+            } else {
+                itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y;
+            }
+            if (status.Airborne) sprite.Play(1);
 
         } 
     }

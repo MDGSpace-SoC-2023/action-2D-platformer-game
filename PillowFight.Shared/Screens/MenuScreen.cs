@@ -1,43 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-using MLEM.Font;
-using MLEM.Ui;
-using MLEM.Ui.Elements;
-using MLEM.Ui.Style;
-using MonoGame.Extended.Screens;
+﻿using Microsoft.Xna.Framework;
+using Myra.Graphics2D.UI;
 
 namespace PillowFight.Shared.Screens
 {
-    internal class MenuScreen : GameScreen
+    internal class MenuScreen : BaseScreen
     {
         private new Game1 Game => (Game1)base.Game;
 
-        private UiSystem ui;
+		private Desktop _desktop;
 
-        public MenuScreen(Game game) : base(game)
+        public MenuScreen(Game game) : base(game, false, false, true)
         {
-            ui = Game.Ui;
-
-            var butt = new Button(Anchor.AutoLeft, new Vector2(100, 50), "Hi", "PlayGame") {OnPressed = element => Game.LoadScreen(new GameplayScreen(Game))};
-            var panel = new Panel(Anchor.CenterLeft, size: new Vector2(200, 300), positionOffset: Vector2.Zero);
-            panel.AddChild(butt);
-            panel.AddChild(new Button(Anchor.AutoLeft, new Vector2(100, 50), "exit") { OnPressed = e => Game.Exit() });
-
-            ui.Add("pan", panel);
-            // ui.Remove("pan");
+			_desktop = new();
+			_desktop.Root = Assets.UIProjects["Menu"].Root;
+			// _desktop.Widgets.this
         }
 
         public override void Update(GameTime gameTime)
-        {
-            ui.Update(gameTime);
-        }
+        {}
 
         public override void Draw(GameTime gameTime)
-        {
-            // ui.DrawEarly(gameTime, Game.SpriteBatch);
-            // ui.Draw(gameTime, this.Game.SpriteBatch);
-        }
+        {}
+
+		public override void DrawMap() {}
+
+		public override void DrawSprites(float deltaTime) {}
+
+		public override void DrawHUD(GameTime gameTime) {
+			_desktop.Render();
+		}
     }
 }

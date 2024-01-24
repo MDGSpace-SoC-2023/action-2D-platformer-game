@@ -21,7 +21,7 @@ namespace PillowFight.Shared.Systems
             var players = World.GetEntities().With<PlayerInputSource>().AsSet().GetEntities();
             var pillows = World.GetEntities().With<PillowComponent>().AsSet().GetEntities();
 
-            input.PreviousState = input.PreviousState;
+            input.PreviousState = input.CurrentState;
             input.CurrentState = ai.AILevel switch
             {
                 1 => AI0(entity, players, pillows, deltaTime),

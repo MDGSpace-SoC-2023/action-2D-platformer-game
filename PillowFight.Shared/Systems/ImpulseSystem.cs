@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DefaultEcs;
+﻿using DefaultEcs;
 using DefaultEcs.System;
 using Microsoft.Xna.Framework;
 using PillowFight.Shared.Components;
@@ -21,7 +18,7 @@ namespace PillowFight.Shared.Systems
 
             if (collision.ReceiveImpulse)
             {
-                velocity.Velocity = impulse.Impulse + (impulse.overrideVel ? Vector2.Zero : velocity.Velocity);
+                velocity.Velocity = impulse.Impulse + velocity.Velocity * impulse.VelocityRatio;
             }
 
             entity.Remove<ImpulseComponent>();

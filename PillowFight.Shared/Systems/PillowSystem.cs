@@ -10,77 +10,42 @@ namespace PillowFight.Shared.Systems
     internal class PillowSystem : AEntitySetSystem<float>
     {
         public PillowSystem(World world) 
-            : base(world.GetEntities().With<PillowComponent>().AsSet(), true) { }
+            : base(world.GetEntities().With<PillowComponent>().AsSet()) { }
 
-        protected override void Update(float state, in Entity entity)
+        protected override void Update(float deltaTime, in Entity entity)
         {
             ref var pillow = ref entity.Get<PillowComponent>();
             ref var velocity = ref entity.Get<VelocityComponent>();
             ref var item = ref entity.Get<ItemStatus>();
             ref var render = ref entity.Get<RenderModifier>();
 
+            float damage = pillow.ExplosionDamage;
             float dx = velocity.X - pillow.Velocity.X;
             float dy = velocity.Y - pillow.Velocity.Y;
             float impulse = (float) Math.Pow(dx * dx + .4 * dy * dy, .5);
-
-            pillow.Velocity = velocity.Velocity;
-
-            float damage = pillow.ExplosionDamage;
-
-            if (pillow.State == Stationery)
-            {
-                
-                if (velocity.Velocity.Length() < pillow.DecayVelocityThreshold && !item.Airborne)
-                {
-                    if (pillow.DecayTimer < 0)
-                    {
-                        var colliders = entity.Get<Colliders>().ColliderList;
-                        foreach (var c in colliders)
-                        {
-                            // if (!c.Get<Colliders>().ColliderList.Remove(entity)) throw new NullReferenceException();
-                            c.Get<Colliders>().ColliderList.Remove(entity);
-                        }
-                        entity.Dispose();
-                        // entity.Disable();
-                        // ref var holder = ref entity.Get<Holdable>().Holder;
-                        // if (holder != null)
-                        // {
-                        //     holder.Value.Get<HolderComponent>().Holding = null;
-                        // }
+            bool shouldDie = false;
             
-                        // entity.Dispose();
-                    }
-                    pillow.DecayTimer -= state;
-                    render.Flicker = .3f;
-                }
-                else
-                {
-                    pillow.DecayTimer = pillow.DecayTime;
-                    render.Flicker = 0;
-                }
-            }
+            pillow.Velocity = velocity.Velocity;
+            if (impulse > pillow.ProjectileThreshold && pillow.State != Running) pillow.State = Projectile;
 
             if (impulse > pillow.ProjectileThreshold || pillow.State == Running /*&& pillow.State != Projectile*/)
             {
-                // var phy = entity.Get<ModifiableComponent<ItemPhysics>>();
-                // phy.Modified.Friction = 0;
-                // phy.Modified.AirFriction = 0;
-                // phy.Modified.UniversalAcceleration = Vector2.Zero;
-                // entity.Disable<ModifiableComponent<ItemPhysics>>();
                 entity.Disable<AccelerationComponent>();
-
-                render.Color = render.Color == Color.Blue ? Color.Blue : Color.Red;
-
-                // pillow.State = Projectile;
+                velocity.Velocity = velocity.Velocity.NormalizedCopy() * pillow.ProjectileSpeed;
+                render.OnColor = render.OnColor == Color.Blue ? Color.Blue : Color.Red;
                 entity.Get<TimedActions>().Add(e => e.Get<PillowComponent>().State = Projectile, .125f);
             }
-
-            bool running = pillow.State == Running;
+            Action a = pillow.State switch {
+                Held => () => {},
+                Projectile => () => {},
+                Running => () => {},
+                _ => () => {}
+            };
+            a.Invoke();
 
             if (pillow.State == Projectile)
             {
-
-                var colliders = entity.Get<Colliders>();
+                // var colliders = entity.Get<Colliders>();
                 var stageCollider = entity.Get<StageCollider>();
 
                 bool stageColliding = 
@@ -90,29 +55,63 @@ namespace PillowFight.Shared.Systems
                                       stageCollider.TopRightSide ||
                                       stageCollider.Head ||
 
-                                      (!running && (stageCollider.LeftFoot ||
-                                                    stageCollider.RightFoot));
+                                      (stageCollider.LeftFoot ||
+                                                    stageCollider.RightFoot);
 
-                if (colliders.ColliderList.Count > 0 || stageColliding)
+                var characters = World.GetEntities().With<CharacterProperties>().AsSet().GetEntities();
+                ref var position = ref entity.Get<PositionComponent>();
+
+                if (stageColliding) {
+                    foreach (var character in characters) {
+                        Vector2 distance = character.Get<PositionComponent>().Position - position.Position;
+                        float distanceMag = distance.NormalizedCopy().Length();
+                        if (distance.Length() < pillow.StageExplosionRadius) {
+                            if (pillow.OnExplode != null) pillow.OnExplode.Invoke(character);
+                            character.Set(new DamageComponent(pillow.ExplosionDamage * distanceMag, render.Color));
+                            character.Set(new ImpulseComponent(pillow.ExplosionImpulse * distanceMag * distance.NormalizedCopy()));
+                        }
+                    }
+                    shouldDie = true;
+                } else {
+                    foreach (var character in characters) {
+                        Vector2 distance = character.Get<PositionComponent>().Position - position.Position;
+                        if (distance.Length() < pillow.CharacterExplosionRadius) {
+                            if (pillow.OnExplode != null) pillow.OnExplode.Invoke(character);
+                            character.Set(new DamageComponent(pillow.ExplosionDamage, render.Color));
+                            character.Set(new ImpulseComponent(pillow.ExplosionImpulse * distance.NormalizedCopy()));
+                            shouldDie = true;
+                            break;
+                        }                        
+                    }
+                }
+            }
+
+            if (pillow.State == Stationery)
+            {
+
+                if (velocity.Velocity.Length() < pillow.DecayVelocityThreshold && !item.Airborne)
                 {
-                    ref var position = ref entity.Get<PositionComponent>();
-                    foreach (var collider in colliders.ColliderList)
+                    if (pillow.DecayTimer < 0)
                     {
-                        collider.Set(new DamageComponent(pillow.ExplosionDamage, render.Color));
-                        collider.Set(new ImpulseComponent(pillow.ExplosionImpulse * (collider.Get<PositionComponent>().Position - position.Position).NormalizedCopy()));
-                        // collider.Get<Colliders>().ColliderList.Remove(entity);
-                        if (pillow.OnExplode != null)
-                            pillow.OnExplode.Invoke(collider);
+                        shouldDie = true;
                     }
 
-                    if (entity.Has<HeldComponent>())
-                        entity.Get<HeldComponent>().Holder.Get<HolderComponent>().Holding = null;
-                    // entity.Dispose();
-
-                    // if (World.GetEntities().AsSet().Contains(entity))
-                    //     throw new NullReferenceException("My lif is a fuc");
-                    entity.Set(new DamageComponent(2, Color.White));
+                    pillow.PreDecayTimer -= deltaTime;
+                    if (pillow.PreDecayTimer < 0) {
+                        pillow.DecayTimer -= deltaTime;
+                        render.Flicker = .3f;
+                    }
                 }
+                else
+                {
+                    pillow.PreDecayTimer = pillow.PreDecayTime;
+                    pillow.DecayTimer = pillow.DecayTime;
+                    render.Flicker = 0;
+                }
+            }
+
+            if (shouldDie) {
+                entity.Set(new KillComponent());               
             }
         }
     }

@@ -1,17 +1,17 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
-using MonoGame.Extended.Sprites;
+using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
 {
-    internal class AnimationUpdateSystem : AComponentSystem<float, AnimatedSprite>
+    internal class AnimationUpdateSystem : AComponentSystem<float, AsepriteSprite>
     {
         public AnimationUpdateSystem(World world) : base(world)
         { }
 
-        protected override void Update(float deltaTime, ref AnimatedSprite component)
+        protected override void Update(float deltaTime, ref AsepriteSprite component)
         {
-            component.Update(deltaTime);
+            component.sprites[component.Index].Update(deltaTime);
             base.Update(deltaTime, ref component);
         }
     }

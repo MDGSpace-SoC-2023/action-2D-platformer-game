@@ -13,7 +13,7 @@ namespace PillowFight.Shared.Systems
         private TiledMapTileLayer _tileLayer;
 
         public MoveSystem(World world, Func<TiledMap> map)
-            : base(world.GetEntities().With<PositionComponent>().With<VelocityComponent>().With<StageCollider>().With<ModifiableComponent<ItemPhysics>>().AsSet())
+            : base(world.GetEntities().With<PositionComponent>().With<StageCollider>().AsSet())
         {
             _map = map;
         }
@@ -39,7 +39,6 @@ namespace PillowFight.Shared.Systems
             {
                 position.YRemainder -= moveY;
                 int sign = Math.Sign(moveY);
-
                 while (moveY != 0)
                 {
                     bool shouldBreak = false;
@@ -118,11 +117,8 @@ namespace PillowFight.Shared.Systems
                         velocity.X *= -itemPhysics.Modified.XRestitution;
                         break;
                     }
-                
-                
                 }
             }
-
             base.Update(state, in entity);
         }
 

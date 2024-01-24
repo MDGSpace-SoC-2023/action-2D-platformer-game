@@ -1,0 +1,21 @@
+<Project>
+  <Project.ExportOptions />
+  <Grid ColumnSpacing="8" RowSpacing="8" ShowGridLines="True">
+    <Grid.ColumnsProportions>
+      <Proportion Type="Auto" />
+      <Proportion Type="Auto" />
+    </Grid.ColumnsProportions>
+    <Grid.RowsProportions>
+      <Proportion Type="Auto" />
+      <Proportion Type="Auto" />
+    </Grid.RowsProportions>
+    <Label Text="Hello, World!" Id="label" />
+    <ComboBox Grid.Column="1">
+      <ListItem Text="Red" Color="#FF0000FF" />
+      <ListItem Text="Green" Color="#008000FF" />
+      <ListItem Text="Blue" Color="#0000FFFF" />
+    </ComboBox>
+    <ImageTextButton Text="Show" Grid.Row="1" />
+    <SpinButton Nullable="True" Width="100" Grid.Column="1" Grid.Row="1" />
+  </Grid>
+</Project>

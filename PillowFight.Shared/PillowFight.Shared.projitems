@@ -10,7 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Assets.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)components\Components.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\Components.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper.cs" />
@@ -23,9 +24,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\CameraSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\CharacterControlSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\CollisionSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\ConditionCheckerSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DamageSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\DebugSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\DespawnSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\HardbodySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\ImpulseSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\KillSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\MapLoadSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\MoveSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\PillowSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\PlayerInputSystem.cs" />
@@ -44,13 +52,7 @@
     <None Include="$(MSBuildThisFileDirectory)Content\Maps\ForestTileset.tsx" />
     <None Include="$(MSBuildThisFileDirectory)Content\Maps\GameplayMap.tiled-project" />
     <None Include="$(MSBuildThisFileDirectory)Content\Maps\GameplayMap.tiled-session" />
-    <None Include="$(MSBuildThisFileDirectory)Content\Sprites\Cloud.sf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Sprites\Luigi.sf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Content\Sprites\Mario.sf">
+    <None Include="$(MSBuildThisFileDirectory)Content\UI\Menu.xmml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

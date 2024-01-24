@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using DefaultEcs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
+using MonoGame.Aseprite.Sprites;
 
 using static PillowFight.Shared.Enums;
 
@@ -134,6 +135,8 @@ namespace PillowFight.Shared.Components
         }
     }
 
+    
+
     internal struct StageCollider
     {
         public bool Head = false;
@@ -144,6 +147,8 @@ namespace PillowFight.Shared.Components
         public bool TopLeftSide = false;
         public bool TopRightSide = false;
 
+        public bool Colliding => Head || LeftFoot || RightFoot || BottomLeftSide || BottomRightSide || TopLeftSide || TopRightSide;
+
         public Vector2 HeadOffset = new Vector2(8, 0);
         public Vector2 LeftFootOffset = new Vector2(8, 0);
         public Vector2 RightFootOffset = new Vector2(8, 0);
@@ -152,10 +157,18 @@ namespace PillowFight.Shared.Components
         public Vector2 TopLeftSideOffset = new Vector2(8, 0);
         public Vector2 TopRightSideOffset = new Vector2(8, 0);
 
-        public StageCollider() { }
+        public StageCollider(
+            Vector2 headOffset,
+            Vector2 leftFootOffset,
+            Vector2 rightFootOffset,
+            Vector2 bottomLeftSideOffset,
+            Vector2 bottomRightSideOffset,
+            Vector2 topLeftSideOffset,
+            Vector2 topRightSideOffset
+        ) { }
     }
 
-    internal struct Colliders{
+    internal struct Colliders {
         public List<Entity> ColliderList = new();
         public Colliders() { }
         public Colliders(List<Entity> list)
@@ -163,6 +176,17 @@ namespace PillowFight.Shared.Components
             ColliderList = list;
         }
     }
+
+    internal struct Hardbody {
+        public Rectangle Hitbox;        
+    }
+
+    internal struct Holdable {
+        public Action<Entity> OnHold;
+        public Action<Entity> OnThrow;
+    }
+
+    internal struct Kickable {}
 
     internal struct ItemProperties
     {
@@ -180,14 +204,13 @@ namespace PillowFight.Shared.Components
         public int Direction;
     }
 
-    internal struct CharacterProperties
-    { }
+    internal struct CharacterProperties {}
 
     internal struct CharacterStatus
     {
         public bool Ducking = true;
         public bool Jumping = true;
-        public CharacterStatus() { }
+        public CharacterStatus() {}
     }
 
     internal struct HolderComponent
@@ -195,7 +218,7 @@ namespace PillowFight.Shared.Components
         public Entity? Holding = null;
         public float ThrowImpulse = 8.0f;
 
-        public HolderComponent() { }
+        public HolderComponent() {}
     }
 
     internal struct HeldComponent
@@ -207,7 +230,6 @@ namespace PillowFight.Shared.Components
             Holder = holder;
         }
     }
-    internal struct Holdable { }
 
     internal struct AbilityComponent
     {
@@ -216,7 +238,12 @@ namespace PillowFight.Shared.Components
         public bool Ability3 = false;
         public bool Ability4 = false;
 
-        public AbilityComponent() { }
+        public float KickRadius = 32.0f;
+        public float PickRadius = 32.0f;
+        public float ThrowImpulse = 12.0f;
+        public float KickImpulse = 12.0f;
+
+        public AbilityComponent() {}
         public AbilityComponent(
             bool ability1,
             bool ability2,
@@ -245,7 +272,7 @@ namespace PillowFight.Shared.Components
         public float MaxXVelocity = 100.0f;
         public float MaxYVelocity = 100.0f;
 
-        public ItemPhysics() { }
+        public ItemPhysics() {}
 
         public ItemPhysics(Vector2 acceleration, float friction, float airFriction, float minXVelocity,
             float xRestitution, float yRestitution)
@@ -272,7 +299,7 @@ namespace PillowFight.Shared.Components
         public float KickImpulse = 12.0f;
 
 
-        public CharacterPhysics() { }
+        public CharacterPhysics() {}
         public CharacterPhysics(
             float runVelocity,
             // float airRunVelocity,
@@ -309,8 +336,10 @@ namespace PillowFight.Shared.Components
 
         public bool WasKeyUp(Keys key) => CurrentState.IsKeyDown(key) && PreviousState.IsKeyUp(key);
         public bool WasKeyDown(Keys key) => CurrentState.IsKeyUp(key) && PreviousState.IsKeyDown(key);
+
         public InputComponent() { }
     }
+
     internal struct PlayerInputSource
     {
         public Func<KeyboardState> InputSource = () => new KeyboardState();
@@ -327,6 +356,7 @@ namespace PillowFight.Shared.Components
         public float PlayerDistance = 240.0f;
         public float PlayerDistanceTolerance = 32.0f;
         public float ThrowDelay = 4.0f;
+
         public AIComponent() { }
     }
 
@@ -338,39 +368,54 @@ namespace PillowFight.Shared.Components
         public float ExplosionDamage = 3.0f;
         public float ProjectileThreshold = 10.0f;
         public float ExplosionImpulse = 5.0f;
-
+        public float StageExplosionRadius = 32.0f;
+        public float CharacterExplosionRadius = 32.0f;
         public float DecayVelocityThreshold = 1.0f;
+        public float PreDecayTimer = 5.0f;
+        public float PreDecayTime = 5.0f;
         public float DecayTimer = 3.0f;
         public float DecayTime = 3.0f;
 
+        public float ProjectileSpeed = 12.0f;
         public Action<Entity> OnExplode = null;
-        public PillowComponent() { }
+        public PillowComponent() {}
     }
+
     internal struct DamageComponent
     {
         public readonly float Damage;
-        public Color Color = Color.White;
+        public Color Color = Color.Green;
 
         public DamageComponent(float damage, Color color)
         {
             Damage = damage;
             Color = color;
         }
-        
     }
 
     internal struct RenderModifier
     {
-        public Color Color = Color.White;
-        public float Flicker = .2f;
-        public float FlickerTimer = 0.0f;
-        public bool OnCycle => FlickerTimer > Flicker;
+        public Color OnColor = Color.White;
+        public Color OffColor = Color.Green;
+        public float Flicker = 0;
+        public float FlickerTimer = 0;
+        public bool OnCycle => FlickerTimer >= Flicker;
+        public Color Color => FlickerTimer >= Flicker ? OnColor : OffColor;
+        public bool ShouldCycle => Flicker > 0;
 
-        public RenderModifier() { }
-        public RenderModifier(Color color, float flicker)
+        public RenderModifier() {}
+
+        public RenderModifier(Color onColor, float flicker)
         {
-            Color = color;
+            OnColor = onColor;
             Flicker = flicker;
+        }
+
+        public RenderModifier(Color onColor, float flicker, Color offColor)
+        {
+            OnColor = onColor;
+            Flicker = flicker;
+            OffColor = offColor;
         }
 
         public void Update(float dt)
@@ -383,12 +428,12 @@ namespace PillowFight.Shared.Components
     internal readonly struct ImpulseComponent
     {
         public readonly Vector2 Impulse;
-        public readonly bool overrideVel;
+        public readonly float VelocityRatio;
         // public readonly List<Vector2> Impulses = new();
-        public ImpulseComponent(Vector2 impulse, bool over = false)
+        public ImpulseComponent(Vector2 impulse, float velocityRatio = 1)
         {
             Impulse = impulse;
-            overrideVel = over;
+            VelocityRatio = velocityRatio;
         }
     }
 
@@ -403,30 +448,53 @@ namespace PillowFight.Shared.Components
         public RenderModifier DeathModifier = new RenderModifier(Color.Maroon, .2f);
         public bool IsDead => Health <= 0;
 
-        public HealthComponent() { }
+        public HealthComponent() {}
+
         public HealthComponent(float health)
         {
             Health = health;
         }
-        public HealthComponent(float health, Action<Entity> onDamage, Action<Entity> onDeath)
-        {
-            Health = health;
-            OnDamage = onDamage;
-            OnDeath = onDeath;
+    }
+
+    internal struct HealthHUD {
+        public readonly int Index;
+        public float Health;
+        public bool HealthChanged;
+        public Texture2D Mask;
+        public HealthHUD(int index) {
+            Index = index;
         }
     }
 
-    // internal struct 
-    internal struct CameraComponent
-    {
-        public OrthographicCamera Camera;
-        public GameWindow Window;
-        public CameraComponent(OrthographicCamera camera, GameWindow window)
-        {
-            Camera = camera;
-            Window = window;
+    internal struct DebugComponent {}
+
+    internal readonly struct GameOverConditions {
+        public readonly Func<bool>[] Checks;
+        public GameOverConditions(Func<bool>[] checks) {
+            Checks = checks;
         }
     }
 
-    internal struct DebugComponent { }
+    internal struct LevelCompleteConditions {
+        public Func<bool>[] Checks;
+        public LevelCompleteConditions(Func<bool>[] checks) {
+            Checks = checks;
+        }
+    }
+
+    internal struct AsepriteSprite {
+        public AnimatedSprite[] sprites;
+        public int Index;
+        public AnimatedSprite Sprite => sprites[Index];
+        public void Play(int i) {
+            Index = Math.Min(i, sprites.Length);
+            sprites[i].Play(startingFrame:0);
+        }
+    }
+
+    internal struct KillComponent {}
+
+    internal struct GameState {}
+
+    internal struct NoOffscreenDespawn {}
 }

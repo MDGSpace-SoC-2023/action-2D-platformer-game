@@ -1,5 +1,6 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
+using Microsoft.Xna.Framework;
 using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
@@ -12,33 +13,20 @@ namespace PillowFight.Shared.Systems
         {
             ref var holding = ref entity.Get<HeldComponent>();
             ref var position = ref entity.Get<PositionComponent>();
+            ref var holderPosition = ref holding.Holder.Get<PositionComponent>();
 
-            position.Position = holding.Holder.Get<PositionComponent>().Position;
-            // if (holding.Holding.HasValue)
-                // holding.Holding.Value.Get<PositionComponent>().Position = position.Position - Vector2.UnitY * 32;
+            position.Position = holderPosition.Position - new Vector2((position.Hitbox.Width - holderPosition.Hitbox.Width)/2, position.Hitbox.Height);
             base.Update(state, in entity);
         }
     }
-
-    internal class HeldSystem : AComponentSystem<float, HeldComponent>
-    {
-        public HeldSystem(World world) : base(world) { }
-
-        protected override void Update(float state, ref HeldComponent component)
-        {
-            component.Holder.Get<HolderComponent>().Holding.Value.Get<PositionComponent>().Position = component.Holder.Get<PositionComponent>().Position;
-            base.Update(state, ref component);
-        }
-    }
-
+    
     internal class OnHold : AEntitySetSystem<float>
     {
         public OnHold(World world) : base(world.GetEntities().WhenAdded<HeldComponent>().AsSet()) { }
 
         protected override void Update(float state, in Entity entity)
         {
-            entity.Disable<VelocityComponent>();
-            // entity.Disable();
+            entity.Get<Holdable>().OnHold.Invoke(entity);
             base.Update(state, in entity);
         }
     }
@@ -49,8 +37,7 @@ namespace PillowFight.Shared.Systems
 
         protected override void Update(float state, in Entity entity)
         {
-            entity.Enable<VelocityComponent>();
-            // entity.Enable();
+            entity.Get<Holdable>().OnThrow.Invoke(entity);
             base.Update(state, in entity);
         }
     }
