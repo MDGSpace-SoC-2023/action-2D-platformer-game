@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DamageSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DebugSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DespawnSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\DistanceSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HardbodySystem.cs" />

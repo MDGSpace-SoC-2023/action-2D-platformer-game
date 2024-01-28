@@ -14,9 +14,10 @@ namespace PillowFight.Shared
             entity.Set(new VelocityComponent());
             entity.Set(new AccelerationComponent());
             entity.Set(new ModifiableComponent<ItemPhysics>());
-            entity.Set(new StageCollider());
+            entity.Set(new SolidCollider());
             entity.Set(new TimedActions());
             entity.Set(new CollisionComponent());
+            entity.Set(new CollisionIgnore());
             entity.Set(new RenderModifier());
         }
 
@@ -25,9 +26,7 @@ namespace PillowFight.Shared
             entity.Set(new CharacterProperties());
             entity.Set(new ModifiableComponent<CharacterPhysics>());
             entity.Set(new HealthComponent(10) { 
-                OnDeath = e => {
-                    e.Get<HolderComponent>().Holding?.Remove<HeldComponent>();
-                }
+                OnDeath = e => e.Get<HolderComponent>().Holding?.Remove<HeldComponent>()
             });
             entity.Set(new HolderComponent());
             entity.Set(new ControlKeys());
@@ -44,22 +43,11 @@ namespace PillowFight.Shared
             var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
             anim.Play(0);
             pillow.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim }});
-
-            pillow.Set(new ItemProperties());
-            pillow.Set(new ItemStatus());
-            pillow.Set(new VelocityComponent());
-            pillow.Set(new AccelerationComponent());
-            pillow.Set(new ModifiableComponent<ItemPhysics>(new ItemPhysics(){XRestitution = .7f, YRestitution = .5f}));
-            pillow.Set(new CollisionComponent());
-            // pillow.Set(new Colliders());
-            pillow.Set(new HolderComponent());
-            pillow.Set(new StageCollider());
-            pillow.Set(new TimedActions());
             pillow.Set(new HealthComponent());
             pillow.Set(new Kickable());
             pillow.Set(new Holdable(){ OnHold = PillowOnHold, OnThrow = PillowOnThrow });
-            pillow.Set(new RenderModifier());
             pillow.Set(new PillowComponent() { State = Enums.PillowState.Held });
+            pillow.Set(new Solid());
         }
 
         public static void PillowOnHold(Entity entity) {
@@ -69,12 +57,12 @@ namespace PillowFight.Shared
             entity.Disable<VelocityComponent>();
             entity.Disable<ModifiableComponent<ItemPhysics>>();
             entity.Disable<CollisionComponent>();
-            // pillow.Disable<Colliders>();
+            entity.Disable<Colliders>();
             entity.Disable<HolderComponent>();
         }
 
         public static void PillowOnThrow(Entity pillow) {
-            if (pillow.Get<StageCollider>().Colliding) {
+            if (pillow.Get<SolidCollider>().Colliding) {
                 pillow.Remove<ImpulseComponent>();
                 pillow.Set(new VelocityComponent());
             }
@@ -85,7 +73,6 @@ namespace PillowFight.Shared
             pillow.Enable<VelocityComponent>();
             pillow.Enable<ModifiableComponent<ItemPhysics>>();
             pillow.Enable<CollisionComponent>();
-            // pillow.Enable<Colliders>();
             pillow.Enable<HolderComponent>();
         }
     }

@@ -35,6 +35,7 @@ namespace PillowFight.Shared.Systems
                 render.OnColor = render.OnColor == Color.Blue ? Color.Blue : Color.Red;
                 entity.Get<TimedActions>().Add(e => e.Get<PillowComponent>().State = Projectile, .125f);
             }
+
             Action a = pillow.State switch {
                 Held => () => {},
                 Projectile => () => {},
@@ -46,22 +47,11 @@ namespace PillowFight.Shared.Systems
             if (pillow.State == Projectile)
             {
                 // var colliders = entity.Get<Colliders>();
-                var stageCollider = entity.Get<StageCollider>();
-
-                bool stageColliding = 
-                    // stageCollider.BottomLeftSide ||
-                    //                   stageCollider.BottomRightSide ||
-                                      stageCollider.TopLeftSide ||
-                                      stageCollider.TopRightSide ||
-                                      stageCollider.Head ||
-
-                                      (stageCollider.LeftFoot ||
-                                                    stageCollider.RightFoot);
-
+                var solidCollider= entity.Get<SolidCollider>();
                 var characters = World.GetEntities().With<CharacterProperties>().AsSet().GetEntities();
                 ref var position = ref entity.Get<PositionComponent>();
 
-                if (stageColliding) {
+                if (solidCollider.Colliding) {
                     foreach (var character in characters) {
                         Vector2 distance = character.Get<PositionComponent>().Position - position.Position;
                         float distanceMag = distance.NormalizedCopy().Length();

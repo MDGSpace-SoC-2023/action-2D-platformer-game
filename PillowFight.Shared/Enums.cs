@@ -21,6 +21,7 @@
         public static class Gameplay {
             public const int DespawnDistance = 4 * 32;
             public const int SpawnDistance = 2 * 32;
+            public const float BlockPushSpeed = 16.0f;
         }
 
         public enum Player

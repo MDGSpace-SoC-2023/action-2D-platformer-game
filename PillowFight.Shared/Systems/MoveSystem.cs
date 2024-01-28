@@ -11,121 +11,162 @@ namespace PillowFight.Shared.Systems
     {
         private Func<TiledMap> _map;
         private TiledMapTileLayer _tileLayer;
+        private Entity _entity;
 
         public MoveSystem(World world, Func<TiledMap> map)
-            : base(world.GetEntities().With<PositionComponent>().With<StageCollider>().AsSet())
+            : base(world.GetEntities().With<PositionComponent>().With<SolidCollider>().AsSet())
         {
             _map = map;
         }
 
-        protected override void Update(float state, in Entity entity)
+        protected override void Update(float deltaTime, in Entity entity)
         {
+            _entity = entity;
             ref var position = ref entity.Get<PositionComponent>();
             ref var velocity = ref entity.Get<VelocityComponent>();
             ref var itemPhysics = ref entity.Get<ModifiableComponent<ItemPhysics>>();
             ref var itemStatus = ref entity.Get<ItemStatus>();
-            ref var stageCollider = ref entity.Get<StageCollider>();
+            ref var solidColliders = ref entity.Get<SolidCollider>();
 
+            Vector2 Position = position.Position;
             _tileLayer = _map().GetLayer<TiledMapTileLayer>("Collision");
 
-            position.XRemainder += velocity.X;
-            position.YRemainder += velocity.Y;
+            position.XRemainder += velocity.X * deltaTime * 100;
+            position.YRemainder += velocity.Y * deltaTime * 100;
 
             int moveX = (int)Math.Truncate(position.XRemainder);
             int moveY = (int)Math.Truncate(position.YRemainder);
+            position.XRemainder -= moveX;
+            position.YRemainder -= moveY;
 
-
-            if (moveY != 0)
-            {
-                position.YRemainder -= moveY;
-                int sign = Math.Sign(moveY);
-                while (moveY != 0)
-                {
-                    bool shouldBreak = false;
-                    if (sign > 0)
-                    {
-                        TiledMapTile collidingTile = CollidesWithMap(position.TopCenter - Vector2.UnitY);
-                        bool collidesTop = shouldBreak = stageCollider.Head = collidingTile.GlobalIdentifier != 0;
-
-                        if (collidesTop)
-                        {
-                            velocity.Y *= -itemPhysics.Modified.YRestitution;
-                        }
-                        else
-                        {
-                            itemStatus.Airborne = true;
-
-                            position.Y -= sign;
-                            moveY -= sign;
-                        }
-                    }
-                    else
-                    {
-                        TiledMapTile collidingRightTile = CollidesWithMap(position.BottomRight + Vector2.UnitY);
-                        TiledMapTile collidingLeftTile = CollidesWithMap(position.BottomLeft + Vector2.UnitY);
-                        bool collidesBottomRight = stageCollider.RightFoot = collidingRightTile.GlobalIdentifier != 0;
-                        bool collidesBottomLeft = stageCollider.LeftFoot = collidingLeftTile.GlobalIdentifier != 0;
-
-
-                        if (collidesBottomRight)
-                        {
-                            itemStatus.Airborne = false;
-                            shouldBreak = true;
-                            velocity.Y *= -itemPhysics.Modified.YRestitution;
-                        }
-                        else if (collidesBottomLeft)
-                        {
-                            itemStatus.Airborne = false;
-                            shouldBreak = true;
-                            velocity.Y *= -itemPhysics.Modified.YRestitution;
-                        }
-                        else
-                        {
-                            itemStatus.Airborne = true;
-                            position.Y -= sign;
-                            moveY -= sign;
-
-                            // itemStatus.Airborne = true;
-                        }
-
-                    }
-
-                    if (shouldBreak) break;
+            var solids = World.GetEntities().With<Solid>().AsSet().GetEntities();
+                
+            bool top = solidColliders.Top = CollidesDirection(position.Position, solidColliders.TopColliders, solids);
+            // if (top) {
+            //     velocity.Y *= -itemPhysics.Modified.YRestitution;
+            // } else 
+            while (moveY > 0) {
+                if (top) {
+                    velocity.Y *= -itemPhysics.Modified.YRestitution;
+                    // velocity.Y = 0;
+                    break;
+                } else {
+                    itemStatus.Airborne = true;
+                    position.Y--;
+                    moveY--;
                 }
+                top = solidColliders.Top = CollidesDirection(position.Position, solidColliders.TopColliders, solids);
+            } 
+            // else
+            bool bottom = solidColliders.Bottom = CollidesDirection(position.Position, solidColliders.BottomColliders, solids);
+
+            if (bottom) {
+             velocity.Y *= -itemPhysics.Modified.YRestitution;
+             // if (position.Y % 32 < 16) position.Y -= position.Y % 32;
+             // else if (moveX >= 0){
+             //     while (bottom) {
+             //         position.X -= itemStatus.Direction;
+             //         bottom = CollidesDirection(position.Position, solidColliders.BottomColliders, solids);
+             //     }
+             // }
+             itemStatus.Airborne = false;
+            } else 
+            while (moveY < 0) {
+                Vector2? solidPosition = CollidesDirectionPosition(position.Position, solidColliders.BottomColliders, solids);
+                if (solidPosition.HasValue) {
+                    velocity.Y *= -itemPhysics.Modified.YRestitution;
+                    // if (position.Y % 32 < 16) position.Y -= position.Y % 32;
+                    if (solidPosition.Value.Y - position.Y < 8) position.Y = (int)solidPosition.Value.Y;
+                    // else if (position.Y + solidColliders.BottomColliders[0].Y > solidPosition.Value.Y) {
+                        // position.X = (int)(solidPosition.Value.X - solidColliders.RightColliders[0].X);
+                        // position.X = (int) (solidPosition.Value.X - solidColliders.RightColliders[0].X);
+                    // }
+                    itemStatus.Airborne = false;
+                    break;
+                } else {
+                    itemStatus.Airborne = true;
+                    position.Y++;
+                    moveY++;
+                }
+                // bottom = solidColliders.Bottom = CollidesDirection(position.Position, solidColliders.BottomColliders, solids);
             }
 
-            if (moveX != 0)
-            {
-                position.XRemainder -= moveX;
-                int sign = Math.Sign(moveX);
-
-                while (moveX != 0)
-                {
-                    TiledMapTile topTile = CollidesWithMap((moveX > 0 ? position.TopRight : position.TopLeft) + Vector2.UnitX * sign);
-                    TiledMapTile bottomTile = CollidesWithMap((moveX > 0 ? position.BottomRight : position.BottomLeft) + Vector2.UnitX * sign);
-
-                    stageCollider.BottomLeftSide = bottomTile.GlobalIdentifier != 0;
-                    stageCollider.TopLeftSide = topTile.GlobalIdentifier != 0;
-
-                    if (topTile.GlobalIdentifier == 0 && bottomTile.GlobalIdentifier == 0)
-                    {
-                        position.X += sign;
-                        moveX -= sign;
+            bool left = solidColliders.Left = CollidesDirection(position.Position, solidColliders.LeftColliders, solids); 
+            if (left) {
+                velocity.X *= -itemPhysics.Modified.XRestitution;
+                while (CollidesDirection(position.Position + Vector2.UnitX, solidColliders.LeftColliders, solids)) {
+                    position.X += 1;
+                }
+            } else while (moveX < 0) {
+                if (left) {
+                    velocity.X *= -itemPhysics.Modified.XRestitution;
+                    while (CollidesDirection(position.Position + Vector2.UnitX, solidColliders.LeftColliders, solids)) {
+                        position.X += 1;
                     }
-                    else
-                    {
-                        velocity.X *= -itemPhysics.Modified.XRestitution;
-                        break;
-                    }
+                    break;
+                } else {
+                    position.X--;
+                    moveX++;
+                }
+            } 
+
+            bool right = solidColliders.Right = CollidesDirection(position.Position, solidColliders.RightColliders, solids); 
+
+            if (right) {
+                velocity.X *= -itemPhysics.Modified.XRestitution;
+                while (CollidesDirection(position.Position - Vector2.UnitX, solidColliders.RightColliders, solids)) {
+                    // position.X -= (int) (Enums.Gameplay.BlockPushSpeed * deltaTime);
+                    position.X -= 1;
+                    // position.XRemainder -= .5f;
                 }
             }
-            base.Update(state, in entity);
+            else while (moveX > 0) {
+                if (right) {
+                    velocity.X *= -itemPhysics.Modified.XRestitution;
+                    while (CollidesDirection(position.Position - Vector2.UnitX, solidColliders.RightColliders, solids)) {
+                        // position.X -= (int) (Enums.Gameplay.BlockPushSpeed * deltaTime);
+                        position.X -= 1;
+                        // position.XRemainder -= .5f;
+                    }
+                    break;
+                } else {
+                    position.X++;
+                    moveX--;
+                }
+            }
+            
+            base.Update(deltaTime, in entity);
         }
 
         private TiledMapTile CollidesWithMap(Vector2 position)
         {
             _tileLayer.TryGetTile((ushort) (position.X / 32), (ushort) ((position.Y / 32)), out var tile);
             return tile ?? default;
+        }
+
+        private bool CollidesDirection(Vector2 position, Vector2[] offsets, ReadOnlySpan<Entity> solids) {
+            foreach (var offset in offsets) {
+                Vector2 Position = position + offset;
+                _tileLayer.TryGetTile((ushort) (Position.X / 32), (ushort) (Position.Y / 32), out var tile);
+                if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return true;
+                else foreach (var solid in solids) {
+                    if (solid.Get<PositionComponent>().Hitbox.Contains(Position) && _entity != solid) return true;
+                }
+            }
+            return false;
+        }
+        private Vector2? CollidesDirectionPosition(Vector2 position, Vector2[] offsets, ReadOnlySpan<Entity> solids) {
+            
+            foreach (var offset in offsets) {
+                Vector2 Position = position + offset;
+                _tileLayer.TryGetTile((ushort) (Position.X / 32), (ushort) (Position.Y / 32), out var tile);
+                if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return new Vector2(Position.X - Position.X%32, Position.Y - Position.Y%32);
+                else foreach (var solid in solids) {
+                    ref var solidPosition = ref solid.Get<PositionComponent>();
+                    if (solidPosition.Hitbox.Contains(Position) && _entity != solid) return solidPosition.Position;
+                }
+            }
+            return null;
         }
     }
 }

@@ -33,16 +33,17 @@ namespace PillowFight.Shared.Screens
 			_debugSystem = new DebugSystem(_world, Game.SpriteBatch, Game.GraphicsDevice);
             _mainSystem = new SequentialSystem<float>(
 
-				new DespawnSystem(_world),
+				//Input first
+                new PlayerInputSystem(_world),
+                new AIInputSystem(_world),
+                new AbilitySystem(_world),
+
 				// new MapLoadSystem(_world, _tiledMap),
                 new TimedActionsSystem(_world),
                 new ImpulseSystem(_world),
 				new OnHold(_world),
 				new OnThrow(_world),
-                new PlayerInputSystem(_world),
-                new AIInputSystem(_world),
                 // new CollisionSystem(_world),
-                new AbilitySystem(_world),
 				new PillowSystem(_world),
                 new CharacterControlSystem(_world),
                 new PhysicsSystem(_world),
@@ -51,6 +52,7 @@ namespace PillowFight.Shared.Screens
                 new AnimationUpdateSystem(_world),
                 new CameraSystem(_world),
                 new DamageSystem(_world),
+				new DespawnSystem(_world),
 				new KillSystem(_world)
             );
 

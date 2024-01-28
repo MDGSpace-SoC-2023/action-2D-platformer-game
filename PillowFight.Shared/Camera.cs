@@ -143,7 +143,7 @@ public sealed class Camera
     }
 
     public void CenterOrigin() {
-        Origin = new Vector2(Viewport.Width, Viewport.Height) * 0.5f;
+        Origin = new Vector2(Viewport.Width, Viewport.Height) * 0.25f;
     }
 
     public Vector2 ScreenToCamera(Vector2 screenPosition) {

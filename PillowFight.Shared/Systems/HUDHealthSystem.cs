@@ -30,7 +30,7 @@ namespace PillowFight.Shared.Systems
 			Vector2 imagePosition = Vector2.Transform(position.Position, Game1.Camera.TransformationMatrix);
 			_spriteBatch.Draw(_renderTarget, Microsoft.Xna.Framework.Vector2.Zero, 
 			new Rectangle((int)imagePosition.X, (int)imagePosition.Y, position.Hitbox.Width, position.Hitbox.Height),
-					 Microsoft.Xna.Framework.Color.White);
+					 Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, new Vector2(2, 2), SpriteEffects.None, 0);
 		}
     }
 }

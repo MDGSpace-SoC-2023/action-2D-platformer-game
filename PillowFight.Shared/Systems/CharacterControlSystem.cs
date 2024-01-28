@@ -1,6 +1,7 @@
 ﻿using System;
 using DefaultEcs;
 using DefaultEcs.System;
+using Microsoft.Xna.Framework;
 using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
@@ -30,8 +31,10 @@ namespace PillowFight.Shared.Systems
             ref var itemPhysics = ref entity.Get<ModifiableComponent<ItemPhysics>>();
             ref var characterPhysics = ref entity.Get<ModifiableComponent<CharacterPhysics>>();
             ref var sprite = ref entity.Get<AsepriteSprite>();
+            ref var holder = ref entity.Get<HolderComponent>();
+            ref var position = ref entity.Get<PositionComponent>();
 
-            if (input.CurrentState.IsKeyDown(keys.LeftKey))
+            if (input.CurrentState.IsKeyDown(keys.Left))
             {
                 status.Direction = -1;
                 bool shouldAccelerate = velocity.X > -characterPhysics.Modified.RunVelocity;
@@ -55,7 +58,7 @@ namespace PillowFight.Shared.Systems
                             velocity.X - characterPhysics.Modified.RunAcceleration * deltaTime);
                 }
             }
-            else if (input.CurrentState.IsKeyDown(keys.RightKey))
+            else if (input.CurrentState.IsKeyDown(keys.Right))
             {
                 status.Direction = 1;
                 bool shouldAccelerate = velocity.X < characterPhysics.Modified.RunVelocity;
@@ -85,7 +88,15 @@ namespace PillowFight.Shared.Systems
                 sprite.Play(0);
             }
 
-            if (input.CurrentState.IsKeyDown(keys.Ability2Key) && status.Falling) {
+            holder.HoldPosition = Vector2.UnitX * position.Hitbox.Width * status.Direction;
+
+            if (input.CurrentState.IsKeyDown(keys.Up)) {
+                holder.HoldPosition = -Vector2.UnitY * position.Hitbox.Height;
+            } else if (input.CurrentState.IsKeyDown(keys.Down) && status.Airborne) {
+                holder.HoldPosition = Vector2.UnitY * position.Hitbox.Height;
+            }
+
+            if (input.CurrentState.IsKeyDown(keys.Ability2) && status.Falling) {
                 itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y * characterPhysics.Modified.JumpGravityMultiplier;
             } else {
                 itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y;
