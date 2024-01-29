@@ -10,13 +10,14 @@ namespace PillowFight.Shared.Systems
     internal class MoveSystem : AEntitySetSystem<float>
     {
         private Func<TiledMap> _map;
-        private TiledMapTileLayer _tileLayer;
+        private TiledMapTileLayer _collisionLayer;
         private Entity _entity;
 
         public MoveSystem(World world, Func<TiledMap> map)
             : base(world.GetEntities().With<PositionComponent>().With<SolidCollider>().AsSet())
         {
             _map = map;
+            _collisionLayer = _map().GetLayer<TiledMapTileLayer>("collision");
         }
 
         protected override void Update(float deltaTime, in Entity entity)
@@ -29,7 +30,6 @@ namespace PillowFight.Shared.Systems
             ref var solidColliders = ref entity.Get<SolidCollider>();
 
             Vector2 Position = position.Position;
-            _tileLayer = _map().GetLayer<TiledMapTileLayer>("Collision");
 
             position.XRemainder += velocity.X * deltaTime * 100;
             position.YRemainder += velocity.Y * deltaTime * 100;
@@ -167,7 +167,7 @@ namespace PillowFight.Shared.Systems
 
         private TiledMapTile CollidesWithMap(Vector2 position)
         {
-            _tileLayer.TryGetTile((ushort)(position.X / 32), (ushort)((position.Y / 32)), out var tile);
+            _collisionLayer.TryGetTile((ushort)(position.X / 32), (ushort)((position.Y / 32)), out var tile);
             return tile ?? default;
         }
 
@@ -176,7 +176,7 @@ namespace PillowFight.Shared.Systems
             foreach (var offset in offsets)
             {
                 Vector2 Position = position + offset;
-                _tileLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
+                _collisionLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
                 if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return true;
                 else foreach (var solid in solids)
                     {
@@ -192,7 +192,7 @@ namespace PillowFight.Shared.Systems
             foreach (var offset in offsets)
             {
                 Vector2 Position = position + offset;
-                _tileLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
+                _collisionLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
                 if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return new Vector2(Position.X - Position.X % 32, Position.Y - Position.Y % 32);
                 else foreach (var solid in solids)
                     {

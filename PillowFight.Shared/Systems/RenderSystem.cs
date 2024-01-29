@@ -2,18 +2,17 @@
 using DefaultEcs.System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
 {
-    public class EntityRenderSystem : AEntitySetSystem<float>
+    public class AsepriteRenderer : AEntitySetSystem<float>
     {
         private GraphicsDevice _graphicsDevice;
         public SpriteBatch _spriteBatch;
         private Camera _camera;
 
-        public EntityRenderSystem(World world, SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, Camera camera)
+        public AsepriteRenderer(World world, SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, Camera camera)
             : base(world.GetEntities().With<AsepriteSprite>().With<PositionComponent>().AsSet())
         {
             _graphicsDevice = graphicsDevice;

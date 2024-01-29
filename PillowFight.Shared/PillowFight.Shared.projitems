@@ -29,7 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DamageSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DebugSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DespawnSystem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Systems\DistanceSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\GhostMoveSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />
@@ -45,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\ValueGeneratorUpdate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\RenderSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\TimedActionsSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\TextureRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

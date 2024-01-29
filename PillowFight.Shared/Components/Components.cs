@@ -557,6 +557,6 @@ namespace PillowFight.Shared.Components
             Amplitude = amp;
         }
 
-        public float Value => Amplitude * MathF.Sin(Time / Frequency);
+        public float Value => Amplitude * MathF.Cos(Time / Frequency);
     }
 }

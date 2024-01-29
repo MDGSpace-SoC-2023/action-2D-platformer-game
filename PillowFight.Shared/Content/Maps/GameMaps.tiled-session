@@ -7,17 +7,37 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
-        "Tutorial.tmx": {
-            "scale": 4,
+        "Demo.tmx": {
+            "scale": 0.8661328125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 2091.25,
-                "y": -107.75
+                "x": 618.8427366617057,
+                "y": 191.6565191900059
+            }
+        },
+        "DemoMap.tmx": {
+            "scale": 1.76875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 304.16961130742044,
+                "y": 192.226148409894
+            }
+        },
+        "SMB3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "Tutorial.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 296,
+                "y": 157
             }
         }
     },
     "last.imagePath": "/home/Piriyan/Public/Development/PillowFight/PillowFight.Shared/Content/Maps",
-    "map.fixedSize": false,
+    "map.fixedSize": true,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
@@ -25,7 +45,8 @@
     ],
     "project": "GameMaps.tiled-project",
     "recentFiles": [
-        "Tutorial.tmx"
+        "Tutorial.tmx",
+        "SMB3.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 1,
@@ -33,5 +54,7 @@
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.transparentColor": "#04c1aa",
+    "tileset.useTransparentColor": true
 }

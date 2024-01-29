@@ -13,9 +13,9 @@ namespace PillowFight.Shared.Screens
 {
     internal class GameplayScreen : BaseScreen
     {
-        private TiledMap _tiledMap;
+        private TiledMap _map;
         private TiledMapRenderer _tiledMapRenderer;
-        private EntityRenderSystem _entityRenderSystem;
+        private AsepriteRenderer _entityRenderSystem;
 		private HUDHealthSystem _hudHealthSystem;
 		private DebugSystem _debugSystem;
         private SequentialSystem<float> _mainSystem;
@@ -25,10 +25,13 @@ namespace PillowFight.Shared.Screens
         private World _world;
         public Entity player;
         public AnimatedSprite playerSprite;
-        public GameplayScreen(Game game) : base(game, true, true, true)
+        public GameplayScreen(Game game, int level) : base(game, true, true, true)
         { 
+			_map = Assets.Maps["Lv"+level.ToString()];
+			_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _map);
+			
             _world = new World();
-            _entityRenderSystem = new EntityRenderSystem(_world, Game.SpriteBatch, Game.GraphicsDevice, Game1.Camera);
+            _entityRenderSystem = new AsepriteRenderer(_world, Game.SpriteBatch, Game.GraphicsDevice, Game1.Camera);
 			_hudHealthSystem = new HUDHealthSystem(_world, Game.GraphicsDevice, Game.SpriteBatch, Game._entityTarget);
 			_debugSystem = new DebugSystem(_world, Game.SpriteBatch, Game.GraphicsDevice);
             _mainSystem = new SequentialSystem<float>(
@@ -48,7 +51,7 @@ namespace PillowFight.Shared.Screens
 				new PillowSystem(_world),
                 new CharacterControlSystem(_world),
                 new PhysicsSystem(_world),
-                new MoveSystem(_world, () => _tiledMap),
+                new MoveSystem(_world, () => _map),
 				new GhostMoveSystem(_world),
 				new HoldingSystem(_world),
                 new AnimationUpdateSystem(_world),
@@ -76,8 +79,8 @@ namespace PillowFight.Shared.Screens
 			}});
 
 			var platform = _world.CreateEntity();
-			Composer.CreateItem(platform, new Rectangle (128, 256, 32, 32));
-			Composer.CreateFloatingPlatform(platform);
+			// Composer.CreateItem(platform, new Rectangle (128, 256, 32, 32));
+			Composer.CreateFloatingPlatform(platform, new Rectangle(128, 256, 32, 32) );
 			var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
 			anim.Play(0);
 			platform.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
@@ -87,8 +90,8 @@ namespace PillowFight.Shared.Screens
 
         public void Load()
         {
-            _tiledMap = Content.Load<TiledMap>("Maps/Demo");
-            _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+            // _tiledMap = Content.Load<TiledMap>("Maps/Demo");
+            // _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
         }
 
         public override void Update(GameTime gameTime)

@@ -49,6 +49,23 @@
 /processor:TiledMapTilesetProcessor
 /build:Maps/ForestTileset.tsx
 
+#begin Maps/smb3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Maps/smb3.png
+
+#begin Maps/smb3.tsx
+/importer:TiledMapTilesetImporter
+/processor:TiledMapTilesetProcessor
+/build:Maps/smb3.tsx
+
 #begin Maps/Tileset.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -61,6 +78,11 @@
 /processorParam:TextureFormat=Color
 /build:Maps/Tileset.png
 
+#begin Maps/Tutorial.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Maps/Tutorial.tmx
+
 #begin Sprites/Cloud.aseprite
 /importer:AsepriteFileContentImporter
 /processor:AsepriteFileContentProcessor
@@ -71,44 +93,8 @@
 /processor:AsepriteFileContentProcessor
 /build:Sprites/Luigi.aseprite
 
-#begin Sprites/Mario.aseprite
+#begin Sprites/Mario3.aseprite
 /importer:AsepriteFileContentImporter
 /processor:AsepriteFileContentProcessor
-/build:Sprites/Mario.aseprite
-
-#begin Sprites/PlumberFellasSpritesheet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/PlumberFellasSpritesheet.png
-
-#begin Sprites/smb3_mario_sheet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/smb3_mario_sheet.png
-
-#begin Sprites/SMBTilesheet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/SMBTilesheet.png
+/build:Sprites/Mario3.aseprite
 

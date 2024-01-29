@@ -62,14 +62,18 @@ namespace PillowFight.Shared
 			pillow.Set(new Solid());
 		}
 
-		public static void CreateFloatingPlatform(Entity entity, bool horizontal = true, bool vertical = false)
+		public static void CreateFloatingPlatform(Entity entity, Rectangle hitbox, bool horizontal = true, bool vertical = false)
 		{
-			entity.Remove<AccelerationComponent>();
-			entity.Remove<SolidCollider>();
+			// entity.Remove<AccelerationComponent>();
+			// entity.Remove<SolidCollider>();
+			entity.Set(new PositionComponent(hitbox));
+			entity.Set(new VelocityComponent());
+			entity.Set(new RenderModifier());
+			entity.Set(new ItemStatus());
 			entity.Set(new Solid());
 
 			if (horizontal)
-				entity.Set(new SineGenerator(1, 2)
+				entity.Set(new SineGenerator(.5f, 2)
 				{
 					Target = (e, f) =>
 					{
@@ -78,11 +82,11 @@ namespace PillowFight.Shared
 				});
 
 			if (vertical)
-				entity.Set(new SineGenerator(1, 100)
+				entity.Set(new SineGenerator(0.5f, 2)
 				{
 					Target = (e, f) =>
 					{
-						e.Get<VelocityComponent>().X = f;
+						e.Get<VelocityComponent>().Y = f;
 					}
 				});
 		}
