@@ -14,9 +14,12 @@ public sealed class Camera
     private Vector2 _origin;
     private bool _hasChanged;
     public Viewport Viewport { get; set; }
-    public Matrix TransformationMatrix {
-        get {
-            if (_hasChanged) {
+    public Matrix TransformationMatrix
+    {
+        get
+        {
+            if (_hasChanged)
+            {
                 UpdateMatrices();
             }
 
@@ -24,9 +27,12 @@ public sealed class Camera
         }
     }
 
-    public Matrix InverseMatrix {
-        get {
-            if (_hasChanged) {
+    public Matrix InverseMatrix
+    {
+        get
+        {
+            if (_hasChanged)
+            {
                 UpdateMatrices();
             }
 
@@ -34,9 +40,11 @@ public sealed class Camera
         }
     }
 
-    public Vector2 Position {
+    public Vector2 Position
+    {
         get { return _position; }
-        set {
+        set
+        {
             if (_position == value) { return; }
 
             _position = value;
@@ -44,10 +52,12 @@ public sealed class Camera
         }
     }
 
-    
-    public float X {
+
+    public float X
+    {
         get { return _position.X; }
-        set {
+        set
+        {
             if (_position.X == value) { return; }
 
             _position.X = value;
@@ -55,10 +65,12 @@ public sealed class Camera
         }
     }
 
-    
-    public float Y {
+
+    public float Y
+    {
         get { return _position.Y; }
-        set {
+        set
+        {
             if (_position.Y == value) { return; }
 
             _position.Y = value;
@@ -66,9 +78,11 @@ public sealed class Camera
         }
     }
 
-    public float Rotation {
+    public float Rotation
+    {
         get { return _rotation; }
-        set {
+        set
+        {
             if (_rotation == value) { return; }
 
             _rotation = value;
@@ -79,7 +93,8 @@ public sealed class Camera
     public Vector2 Zoom
     {
         get { return _zoom; }
-        set {
+        set
+        {
             if (_zoom == value) { return; }
 
             _zoom = value;
@@ -87,9 +102,11 @@ public sealed class Camera
         }
     }
 
-    public Vector2 Origin {
+    public Vector2 Origin
+    {
         get { return _origin; }
-        set {
+        set
+        {
             if (_origin == value) { return; }
 
             _origin = value;
@@ -100,7 +117,8 @@ public sealed class Camera
     public Camera(int width, int height)
         : this(new Viewport(0, 0, width, height, 0, 1)) { }
 
-    public Camera(Viewport viewport) {
+    public Camera(Viewport viewport)
+    {
         _position = Vector2.Zero;
         _rotation = 0.0f;
         _origin = Vector2.Zero;
@@ -110,8 +128,10 @@ public sealed class Camera
         UpdateMatrices();
     }
 
-    private void UpdateMatrices() {
-        Matrix translationMatrix = Matrix.CreateTranslation(new Vector3 {
+    private void UpdateMatrices()
+    {
+        Matrix translationMatrix = Matrix.CreateTranslation(new Vector3
+        {
             X = -(int)Math.Floor(_position.X),
             Y = -(int)Math.Floor(_position.Y),
             Z = 0
@@ -119,13 +139,15 @@ public sealed class Camera
 
         Matrix rotationMatrix = Matrix.CreateRotationZ(_rotation);
 
-        Matrix scaleMatrix = Matrix.CreateScale(new Vector3 {
+        Matrix scaleMatrix = Matrix.CreateScale(new Vector3
+        {
             X = _zoom.X,
             Y = _zoom.Y,
             Z = 1
         });
 
-        Matrix originTranslationMatrix = Matrix.CreateTranslation(new Vector3 {
+        Matrix originTranslationMatrix = Matrix.CreateTranslation(new Vector3
+        {
             X = (int)Math.Floor(_origin.X),
             Y = (int)Math.Floor(_origin.Y),
             Z = 0
@@ -142,15 +164,18 @@ public sealed class Camera
         _hasChanged = false;
     }
 
-    public void CenterOrigin() {
+    public void CenterOrigin()
+    {
         Origin = new Vector2(Viewport.Width, Viewport.Height) * 0.25f;
     }
 
-    public Vector2 ScreenToCamera(Vector2 screenPosition) {
+    public Vector2 ScreenToCamera(Vector2 screenPosition)
+    {
         return Vector2.Transform(screenPosition, InverseMatrix);
     }
 
-    public Vector2 CameraToScreen(Vector2 worldPosition) {
+    public Vector2 CameraToScreen(Vector2 worldPosition)
+    {
         return Vector2.Transform(worldPosition, TransformationMatrix);
     }
 }

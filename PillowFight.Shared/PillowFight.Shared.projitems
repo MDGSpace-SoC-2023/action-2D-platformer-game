@@ -39,6 +39,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\PillowSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\PlayerInputSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\PhysicsSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\SpriteCollider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\StageCollider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\ValueGeneratorUpdate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\RenderSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\TimedActionsSystem.cs" />
   </ItemGroup>

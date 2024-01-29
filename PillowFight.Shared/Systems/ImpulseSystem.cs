@@ -1,6 +1,5 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
-using Microsoft.Xna.Framework;
 using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems

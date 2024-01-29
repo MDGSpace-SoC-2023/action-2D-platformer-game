@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DefaultEcs;
+﻿using DefaultEcs;
 using DefaultEcs.System;
 using PillowFight.Shared.Components;
 

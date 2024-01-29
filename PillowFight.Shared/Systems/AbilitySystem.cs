@@ -23,33 +23,42 @@ namespace PillowFight.Shared.Systems
             ref var charPhy = ref entity.Get<ModifiableComponent<CharacterPhysics>>();
             ref var holder = ref entity.Get<HolderComponent>();
             ref var position = ref entity.Get<PositionComponent>();
-             
-            if (input.CurrentState.IsKeyDown(keys.Ability1)) {
-                if (holder.Holding == null) {
+
+            if (input.CurrentState.IsKeyDown(keys.Ability1))
+            {
+                if (holder.Holding == null)
+                {
                     Entity? collider = null;
                     ReadOnlySpan<Entity> holdables = World.GetEntities().With<Holdable>().AsSet().GetEntities();
-                    foreach (var holdable in holdables) {
+                    foreach (var holdable in holdables)
+                    {
                         Vector2 distance = holdable.Get<PositionComponent>().Position - entity.Get<PositionComponent>().Position;
-                        if (distance.Length() < ability.PickRadius) {
+                        if (distance.Length() < ability.PickRadius)
+                        {
                             collider = holdable;
                             break;
-                        }                        
-                    }                    
+                        }
+                    }
 
                     Entity pillow;
-                    if (collider == null) {
+                    if (collider == null)
+                    {
                         pillow = World.CreateEntity();
                         Helper.CreateItem(pillow, new Rectangle(0, 0, 32, 32));
                         Helper.CreatePillow(pillow);
-                    } else pillow = collider.Value;
-                    
+                    }
+                    else pillow = collider.Value;
+
                     pillow.Set(new HeldComponent(entity));
                     holder.Holding = pillow;
                     pillow.Set(new PositionComponent(new Rectangle(position.X, position.Y - 64, 32, 32)));
                 }
-            } else {
-                if (holder.Holding != null) {
-                    var pillow  = holder.Holding.Value;
+            }
+            else
+            {
+                if (holder.Holding != null)
+                {
+                    var pillow = holder.Holding.Value;
                     bool left = input.CurrentState.IsKeyDown(keys.Left);
                     bool right = input.CurrentState.IsKeyDown(keys.Right);
                     bool up = input.CurrentState.IsKeyDown(keys.Up);
@@ -71,32 +80,43 @@ namespace PillowFight.Shared.Systems
                 }
             }
 
-            if (input.WasKeyUp(keys.Ability2)) {
-                if (item.Airborne) {
+            if (input.WasKeyUp(keys.Ability2))
+            {
+                if (item.Airborne)
+                {
                     ReadOnlySpan<Entity> kickables = World.GetEntities().With<Kickable>().AsSet().GetEntities();
-                    foreach (var kickable in kickables) {
+                    foreach (var kickable in kickables)
+                    {
                         Vector2 distance = kickable.Get<PositionComponent>().Position - entity.Get<PositionComponent>().Position;
                         Vector2 impulse;
-                        if (distance.Length() < ability.KickRadius) {
-                            if (kickable.Get<ItemStatus>().Airborne) {
+                        if (distance.Length() < ability.KickRadius)
+                        {
+                            if (kickable.Get<ItemStatus>().Airborne)
+                            {
                                 bool left = input.CurrentState.IsKeyDown(keys.Left);
                                 bool right = input.CurrentState.IsKeyDown(keys.Right);
                                 bool up = input.CurrentState.IsKeyDown(keys.Up);
                                 bool down = input.CurrentState.IsKeyDown(keys.Down);
 
                                 impulse = new Vector2(left ? -1 : 1, up ? 1 : down ? -1 : 0).NormalizedCopy() * charPhy.Modified.KickImpulse;
-                            } else {
+                            }
+                            else
+                            {
                                 impulse = Vector2.UnitX * charPhy.Modified.KickImpulse * entity.Get<ItemStatus>().Direction;
                             }
                             kickable.Set(new ImpulseComponent(impulse, 0.5f));
                             entity.Set(new ImpulseComponent(-impulse, 0.5f));
                         }
                     }
-                } else {
-                    ref var vel = ref entity.Get<VelocityComponent>(); 
+                }
+                else
+                {
+                    ref var vel = ref entity.Get<VelocityComponent>();
                     vel.Y = charPhy.Modified.JumpVelocity;
                 }
-            } else {
+            }
+            else
+            {
                 if (!item.Falling && input.WasKeyDown(keys.Ability2)) entity.Get<VelocityComponent>().Y /= 2;
             }
         }

@@ -8,7 +8,7 @@ namespace PillowFight.Shared.Systems
 {
     internal class CharacterControlSystem : AEntitySetSystem<float>
     {
-        public CharacterControlSystem(World world) 
+        public CharacterControlSystem(World world)
             : base(world.GetEntities()
                 .With<ControlKeys>()
                 .With<InputComponent>()
@@ -50,7 +50,7 @@ namespace PillowFight.Shared.Systems
                 {
                     if (velocity.X * acceleration.X < 0)
                         sprite.Play(3);
-                    else 
+                    else
                         sprite.Play(4);
 
                     if (shouldAccelerate)
@@ -75,7 +75,7 @@ namespace PillowFight.Shared.Systems
                 {
                     if (velocity.X * acceleration.X < 0)
                         sprite.Play(3);
-                    else 
+                    else
                         sprite.Play(4);
 
                     if (shouldAccelerate)
@@ -90,19 +90,25 @@ namespace PillowFight.Shared.Systems
 
             holder.HoldPosition = Vector2.UnitX * position.Hitbox.Width * status.Direction;
 
-            if (input.CurrentState.IsKeyDown(keys.Up)) {
+            if (input.CurrentState.IsKeyDown(keys.Up))
+            {
                 holder.HoldPosition = -Vector2.UnitY * position.Hitbox.Height;
-            } else if (input.CurrentState.IsKeyDown(keys.Down) && status.Airborne) {
+            }
+            else if (input.CurrentState.IsKeyDown(keys.Down) && status.Airborne)
+            {
                 holder.HoldPosition = Vector2.UnitY * position.Hitbox.Height;
             }
 
-            if (input.CurrentState.IsKeyDown(keys.Ability2) && status.Falling) {
+            if (input.CurrentState.IsKeyDown(keys.Ability2) && status.Falling)
+            {
                 itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y * characterPhysics.Modified.JumpGravityMultiplier;
-            } else {
+            }
+            else
+            {
                 itemPhysics.Modified.UniversalAcceleration.Y = itemPhysics.Base.UniversalAcceleration.Y;
             }
             if (status.Airborne) sprite.Play(1);
 
-        } 
+        }
     }
 }

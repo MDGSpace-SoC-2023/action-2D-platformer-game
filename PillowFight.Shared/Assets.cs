@@ -15,7 +15,7 @@ namespace PillowFight.Shared
         public static Dictionary<string, SpriteFont> Fonts = new();
         public static Dictionary<string, SpriteSheet> Aseprites = new();
         public static Dictionary<string, Effect> Effects = new();
-        public static Dictionary<string, Project> UIProjects= new();
+        public static Dictionary<string, Project> UIProjects = new();
     }
 
     public class AssetLoader

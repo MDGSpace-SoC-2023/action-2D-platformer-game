@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DefaultEcs;
 using DefaultEcs.System;
 using Microsoft.Xna.Framework.Input;
@@ -10,7 +9,7 @@ namespace PillowFight.Shared.Systems
 {
     internal class AIInputSystem : AEntitySetSystem<float>
     {
-        public AIInputSystem(World world, bool useBuffer = false) 
+        public AIInputSystem(World world, bool useBuffer = false)
             : base(world.GetEntities().With<AIComponent>().With<InputComponent>().AsSet()) { }
 
         protected override void Update(float deltaTime, in Entity entity)
@@ -55,7 +54,7 @@ namespace PillowFight.Shared.Systems
                         keys.Add(Keys.A);
                     }
                 }
-                
+
                 if (AI.LastThrowTime < 0)
                 {
                     keys.Add(Keys.J);

@@ -13,12 +13,14 @@
             public const int Height = 360;
         }
 
-        public static class Camera {
+        public static class Camera
+        {
             public const float CameraXOffsetRatio = 0.25f;
             public const float CameraYOffsetRatio = 0.25f;
         }
 
-        public static class Gameplay {
+        public static class Gameplay
+        {
             public const int DespawnDistance = 4 * 32;
             public const int SpawnDistance = 2 * 32;
             public const float BlockPushSpeed = 16.0f;

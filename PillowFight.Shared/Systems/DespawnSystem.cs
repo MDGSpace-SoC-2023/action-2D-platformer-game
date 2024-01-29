@@ -3,11 +3,14 @@ using DefaultEcs.System;
 using Microsoft.Xna.Framework;
 using PillowFight.Shared.Components;
 
-namespace PillowFight.Shared.Systems {
-	internal class DespawnSystem : AEntitySetSystem<float> {
-		public DespawnSystem(World world) : base(world.GetEntities().With<PositionComponent>().Without<NoOffscreenDespawn>().AsSet()){}
+namespace PillowFight.Shared.Systems
+{
+	internal class DespawnSystem : AEntitySetSystem<float>
+	{
+		public DespawnSystem(World world) : base(world.GetEntities().With<PositionComponent>().Without<NoOffscreenDespawn>().AsSet()) { }
 
-		protected override void Update(float state, in Entity entity) {
+		protected override void Update(float state, in Entity entity)
+		{
 			ref var position = ref entity.Get<PositionComponent>();
 			Camera camera = Game1.Camera;
 			Vector2 screenPosition = Vector2.Transform(position.Position, camera.TransformationMatrix);
@@ -20,8 +23,9 @@ namespace PillowFight.Shared.Systems {
 			if (leftDistance < -Enums.Gameplay.DespawnDistance ||
 				rightDistance > Enums.Gameplay.DespawnDistance ||
 				upDistance < -Enums.Gameplay.DespawnDistance ||
-				downDistance > Enums.Gameplay.DespawnDistance) {
-					entity.Set(new KillComponent());
+				downDistance > Enums.Gameplay.DespawnDistance)
+			{
+				entity.Set(new KillComponent());
 			}
 		}
 	}

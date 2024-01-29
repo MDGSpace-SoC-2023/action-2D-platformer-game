@@ -11,7 +11,7 @@ using PillowFight.Shared.Screens;
 
 namespace PillowFight.Shared
 {
-    public class Game1 : Game
+	public class Game1 : Game
 	{
 		private GraphicsDeviceManager _graphics;
 		public SpriteBatch SpriteBatch;
@@ -33,35 +33,35 @@ namespace PillowFight.Shared
 		// public int presentHeight;
 		// private float outputAspect;
 		// private float preferredAspect;
-	    private bool _isResizing;
+		private bool _isResizing;
 
-	    //  Screen size
-	    public int Width { get; private set; }
-	    public int Height { get; private set; }
-	    public int ViewWidth { get; private set; }
-	    public int ViewHeight { get; private set; }
+		//  Screen size
+		public int Width { get; private set; }
+		public int Height { get; private set; }
+		public int ViewWidth { get; private set; }
+		public int ViewHeight { get; private set; }
 
-	    //  Screen scale matrix
-	    public Matrix ScreenScaleMatrix { get; private set; }
+		//  Screen scale matrix
+		public Matrix ScreenScaleMatrix { get; private set; }
 
-	    //  Screen Viewport
-	    public Viewport Viewport { get; private set; }
+		//  Screen Viewport
+		public Viewport Viewport { get; private set; }
 
-	    //  View padding, amount to apply for letter/pillar boxing
-	    private int _viewPadding;
-	    public int ViewPadding
-	    {
-	        get => _viewPadding;
-	        set
-	        {
-	            //  Only perform view update if the value is changed
-	            if (_viewPadding != value)
-	            {
-	                _viewPadding = value;
-	                UpdateView();
-	            }
-	        }
-	    }
+		//  View padding, amount to apply for letter/pillar boxing
+		private int _viewPadding;
+		public int ViewPadding
+		{
+			get => _viewPadding;
+			set
+			{
+				//  Only perform view update if the value is changed
+				if (_viewPadding != value)
+				{
+					_viewPadding = value;
+					UpdateView();
+				}
+			}
+		}
 
 		public Game1()
 		{
@@ -74,10 +74,10 @@ namespace PillowFight.Shared
 			_graphics.PreferredBackBufferHeight = Enums.Screen.HeightDefault;
 			Window.AllowUserResizing = true;
 			// Window.IsBorderless = true;
-			
+
 			_graphics.DeviceCreated += OnGraphicsDeviceCreated;
-	        _graphics.DeviceReset += OnGraphicsDeviceReset;
-	        Window.ClientSizeChanged += OnWindowSizeChanged;
+			_graphics.DeviceReset += OnGraphicsDeviceReset;
+			Window.ClientSizeChanged += OnWindowSizeChanged;
 
 			_graphics.ApplyChanges();
 
@@ -299,7 +299,7 @@ namespace PillowFight.Shared
 		{
 			this.SpriteBatch.Begin(
 				transformMatrix: null,
-				samplerState:SamplerState.PointClamp,
+				samplerState: SamplerState.PointClamp,
 				effect: effect);
 		}
 	}

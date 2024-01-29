@@ -37,7 +37,7 @@ namespace PillowFight.Shared.Components
 
     internal struct PositionComponent
     {
-        
+
         public int X
         {
             get => Hitbox.X;
@@ -61,19 +61,19 @@ namespace PillowFight.Shared.Components
 
         public Rectangle Hitbox;
 
-        public int Top => Hitbox.Y;
-        public int Bottom => Hitbox.Y + Hitbox.Height;
-        public int Left => Hitbox.X;
-        public int Right => Hitbox.X + Hitbox.Width;
-        public Vector2 Center => new Vector2(Right / 2f, Bottom / 2f);
-        public Vector2 TopCenter => new Vector2((Left + Right)/2f, Top);
-        public Vector2 BottomCenter => new Vector2((Left + Right)/2f, Bottom);
-        public Vector2 LeftCenter => new Vector2(Left, (Top + Bottom)/2f);
-        public Vector2 RightCenter => new Vector2(Right, (Top + Bottom)/2f);
-        public Vector2 TopLeft => new Vector2(Left, Top);
-        public Vector2 TopRight => new Vector2(Right, Top);
-        public Vector2 BottomLeft => new Vector2(Left, Bottom);
-        public Vector2 BottomRight => new Vector2(Right, Bottom);
+        // public int Top => Hitbox.Y;
+        // public int Bottom => Hitbox.Y + Hitbox.Height;
+        // public int Left => Hitbox.X;
+        // public int Right => Hitbox.X + Hitbox.Width;
+        // public Vector2 Center => new Vector2(Right / 2f, Bottom / 2f);
+        // public Vector2 TopCenter => new Vector2((Left + Right)/2f, Top);
+        // public Vector2 BottomCenter => new Vector2((Left + Right)/2f, Bottom);
+        // public Vector2 LeftCenter => new Vector2(Left, (Top + Bottom)/2f);
+        // public Vector2 RightCenter => new Vector2(Right, (Top + Bottom)/2f);
+        // public Vector2 TopLeft => new Vector2(Left, Top);
+        // public Vector2 TopRight => new Vector2(Right, Top);
+        // public Vector2 BottomLeft => new Vector2(Left, Bottom);
+        // public Vector2 BottomRight => new Vector2(Right, Bottom);
 
         public PositionComponent(Rectangle hitbox, Vector2 velocity)
         {
@@ -81,7 +81,7 @@ namespace PillowFight.Shared.Components
         }
 
         public PositionComponent(Rectangle position)
-            : this(position, Vector2.Zero) 
+            : this(position, Vector2.Zero)
         { }
     }
 
@@ -135,7 +135,8 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct CollisionIgnore {
+    internal struct CollisionIgnore
+    {
         public List<Entity> IgnoreEntity = new();
         public EntityQueryBuilder CollideType = null;
         public EntityQueryBuilder IgnoreType = null;
@@ -144,22 +145,30 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct SolidCollider {
+    internal struct SolidCollider
+    {
         public bool Top = false;
         public bool Bottom = false;
         public bool Left = false;
         public bool Right = false;
 
-        public bool Colliding => Top ||  Bottom || Left || Right;
+        public bool Colliding => Top || Bottom || Left || Right;
 
         public Vector2[] TopColliders = new Vector2[] { new Vector2(16, 0) };
         public Vector2[] BottomColliders = new Vector2[] { new Vector2(2, 32), new Vector2(30, 32) };
-        public Vector2[] LeftColliders = new Vector2[] { new Vector2(0, 16), new Vector2(0, 24)};
-        public Vector2[] RightColliders = new Vector2[] { new Vector2(32, 16), new Vector2(32, 24) };
+        public Vector2[] LeftColliders = new Vector2[] {
+            new Vector2(0, 16)
+            // , new Vector2(0, 24)
+        };
+        public Vector2[] RightColliders = new Vector2[] {
+            new Vector2(32, 16)
+            // , new Vector2(32, 24) 
+        };
 
-        public SolidCollider() {}
+        public SolidCollider() { }
 
-        public SolidCollider(Vector2[] top, Vector2[] bottom, Vector2[] left, Vector2[] right) {
+        public SolidCollider(Vector2[] top, Vector2[] bottom, Vector2[] left, Vector2[] right)
+        {
             TopColliders = top;
             BottomColliders = bottom;
             LeftColliders = left;
@@ -167,14 +176,16 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct Solid {
+    internal struct Solid
+    {
         public Rectangle Hitbox = new Rectangle(0, 0, 32, 32);
 
         public Solid()
-        {}
+        { }
     }
-    
-    internal struct Colliders {
+
+    internal struct Colliders
+    {
         public List<Entity> ColliderList = new();
         public Colliders() { }
         public Colliders(List<Entity> list)
@@ -183,17 +194,19 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct Hardbody {
-        public Rectangle Hitbox;        
+    internal struct Hardbody
+    {
+        public Rectangle Hitbox;
     }
 
-    internal struct Holdable {
+    internal struct Holdable
+    {
         public Action<Entity> OnHold;
         public Action<Entity> OnThrow;
         public Entity HolderCache;
     }
 
-    internal struct Kickable {}
+    internal struct Kickable { }
 
     internal struct ItemProperties
     {
@@ -215,13 +228,13 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct CharacterProperties {}
+    internal struct CharacterProperties { }
 
     internal struct CharacterStatus
     {
         public bool Ducking = true;
         public bool Jumping = true;
-        public CharacterStatus() {}
+        public CharacterStatus() { }
     }
 
     internal struct HolderComponent
@@ -230,7 +243,7 @@ namespace PillowFight.Shared.Components
         public float ThrowImpulse = 8.0f;
         public Vector2 HoldPosition = Vector2.Zero;
 
-        public HolderComponent() {}
+        public HolderComponent() { }
     }
 
     internal struct HeldComponent
@@ -255,7 +268,7 @@ namespace PillowFight.Shared.Components
         public float ThrowImpulse = 12.0f;
         public float KickImpulse = 12.0f;
 
-        public AbilityComponent() {}
+        public AbilityComponent() { }
         public AbilityComponent(
             bool ability1,
             bool ability2,
@@ -284,7 +297,7 @@ namespace PillowFight.Shared.Components
         public float MaxXVelocity = 100.0f;
         public float MaxYVelocity = 100.0f;
 
-        public ItemPhysics() {}
+        public ItemPhysics() { }
 
         public ItemPhysics(Vector2 acceleration, float friction, float airFriction, float minXVelocity,
             float xRestitution, float yRestitution)
@@ -311,7 +324,7 @@ namespace PillowFight.Shared.Components
         public float KickImpulse = 12.0f;
 
 
-        public CharacterPhysics() {}
+        public CharacterPhysics() { }
         public CharacterPhysics(
             float runVelocity,
             // float airRunVelocity,
@@ -390,7 +403,7 @@ namespace PillowFight.Shared.Components
 
         public float ProjectileSpeed = 12.0f;
         public Action<Entity> OnExplode = null;
-        public PillowComponent() {}
+        public PillowComponent() { }
     }
 
     internal struct DamageComponent
@@ -415,7 +428,7 @@ namespace PillowFight.Shared.Components
         public Color Color => FlickerTimer >= Flicker ? OnColor : OffColor;
         public bool ShouldCycle => Flicker > 0;
 
-        public RenderModifier() {}
+        public RenderModifier() { }
 
         public RenderModifier(Color onColor, float flicker)
         {
@@ -460,7 +473,7 @@ namespace PillowFight.Shared.Components
         public RenderModifier DeathModifier = new RenderModifier(Color.Maroon, .2f);
         public bool IsDead => Health <= 0;
 
-        public HealthComponent() {}
+        public HealthComponent() { }
 
         public HealthComponent(float health)
         {
@@ -468,50 +481,73 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct HealthHUD {
+    internal struct HealthHUD
+    {
         public readonly int Index;
         public float Health;
         public bool HealthChanged;
         public Texture2D Mask;
-        public HealthHUD(int index) {
+        public Vector2 Scale = new Vector2(1, 1);
+        public HealthHUD(int index)
+        {
             Index = index;
         }
     }
 
-    internal struct DebugComponent {}
+    internal struct DebugComponent { }
 
-    internal readonly struct GameOverConditions {
+    internal readonly struct GameOverConditions
+    {
         public readonly Func<bool>[] Checks;
-        public GameOverConditions(Func<bool>[] checks) {
+        public GameOverConditions(Func<bool>[] checks)
+        {
             Checks = checks;
         }
     }
 
-    internal struct LevelCompleteConditions {
+    internal struct LevelCompleteConditions
+    {
         public Func<bool>[] Checks;
-        public LevelCompleteConditions(Func<bool>[] checks) {
+        public LevelCompleteConditions(Func<bool>[] checks)
+        {
             Checks = checks;
         }
     }
 
-    internal struct AsepriteSprite {
+    internal struct AsepriteSprite
+    {
         public AnimatedSprite[] sprites;
         public int Index;
         public AnimatedSprite Sprite => sprites[Index];
-        public void Play(int i) {
+        public void Play(int i)
+        {
             Index = Math.Min(i, sprites.Length);
-            sprites[i].Play(startingFrame:0);
+            sprites[i].Play(startingFrame: 0);
         }
     }
 
-    internal struct KillComponent {}
+    internal struct KillComponent { }
 
-    internal struct GameState {}
+    internal struct GameState { }
 
-    internal struct NoOffscreenDespawn {}
+    internal struct NoOffscreenDespawn { }
 
-    internal struct PollDistance {
+    internal struct PollDistance
+    {
         public (float threshold, Action<Entity, Entity, Vector2> action) Distance_Action;
         public Type EntityCondition;
+    }
+
+    internal struct SineGenerator
+    {
+        public float Frequency = 1.0f;
+        public float Amplitude = 1.0f;
+        public float Time = 0;
+
+        public SineGenerator()
+        {
+        }
+
+        public float Value => Amplitude * MathF.Sin(Time / Frequency);
     }
 }
