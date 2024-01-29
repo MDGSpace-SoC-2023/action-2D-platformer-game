@@ -7,7 +7,7 @@ using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Systems
 {
-	public class HUDHealthSystem : AEntitySetSystem<float>
+    public class HUDHealthSystem : AEntitySetSystem<float>
 	{
 		private GraphicsDevice _graphicsDevice;
 		private SpriteBatch _spriteBatch;
@@ -25,13 +25,20 @@ namespace PillowFight.Shared.Systems
 			ref var position = ref entity.Get<PositionComponent>();
 			ref var sprite = ref entity.Get<AsepriteSprite>();
 			ref var hud = ref entity.Get<HealthHUD>();
+			ref var health = ref entity.Get<HealthComponent>();
 
-			if (hud.HealthChanged) hud.Mask = new Texture2D(_graphicsDevice, position.Hitbox.Width, (int)hud.Health);
-			// _spriteBatch.Draw(sprite, )
+			float lostHealthRatio = 1 - health.Health / health.MaxHealth;
 			Vector2 imagePosition = Vector2.Transform(position.Position, Game1.Camera.TransformationMatrix);
-			_spriteBatch.Draw(_renderTarget, Microsoft.Xna.Framework.Vector2.Zero,
+			int hudYOffset = (int)(position.Hitbox.Height * lostHealthRatio);
+			Color hudColor = Color.Lerp(Color.Green, Color.Red, lostHealthRatio);
+
+			_spriteBatch.Draw(_renderTarget, hud.Position,
 			new Rectangle((int)imagePosition.X, (int)imagePosition.Y, position.Hitbox.Width, position.Hitbox.Height),
-					 Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, hud.Scale, SpriteEffects.None, 0);
+					 Color.DarkSlateGray, 0, Vector2.Zero, hud.Scale, SpriteEffects.None, 0);
+
+			_spriteBatch.Draw(_renderTarget, new Vector2(hud.Position.X, hud.Position.Y + hudYOffset * hud.Scale.Y),
+			new Rectangle((int)imagePosition.X, (int)(imagePosition.Y + hudYOffset), position.Hitbox.Width, position.Hitbox.Height - hudYOffset),
+					 hudColor, 0, Vector2.Zero, hud.Scale, SpriteEffects.None, 0);
 		}
 	}
 }

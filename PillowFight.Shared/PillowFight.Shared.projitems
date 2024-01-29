@@ -31,7 +31,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DistanceSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Systems\HardbodySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\ImpulseSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\KillSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\MapLoadSystem.cs" />

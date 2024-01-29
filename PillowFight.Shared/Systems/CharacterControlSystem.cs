@@ -109,6 +109,8 @@ namespace PillowFight.Shared.Systems
             }
             if (status.Airborne) sprite.Play(1);
 
+            if (input.WasKeyUp(Microsoft.Xna.Framework.Input.Keys.I)) entity.Set(new DamageComponent() { Damage = 1});
+
         }
     }
 }

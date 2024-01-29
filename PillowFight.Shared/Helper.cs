@@ -27,8 +27,10 @@ namespace PillowFight.Shared
 			entity.Set(new CharacterStatus());
 			entity.Set(new CharacterProperties());
 			entity.Set(new ModifiableComponent<CharacterPhysics>());
-			entity.Set(new HealthComponent(10)
+			// entity.Set(new HealthComponent(10)
+			entity.Set(new HealthComponent()
 			{
+				Health = 10, MaxHealth = 10,
 				OnDeath = e => e.Get<HolderComponent>().Holding?.Remove<HeldComponent>()
 			});
 			entity.Set(new HolderComponent());
@@ -38,7 +40,10 @@ namespace PillowFight.Shared
 
 		public static void CreatePlayer(Entity entity, int index)
 		{
-			entity.Set(new HealthHUD(index) { Scale = new Vector2(2, 2) });
+			entity.Set(new HealthHUD(index) {
+				Scale = new Vector2(2, 2),
+				Position = new Vector2(128, 0)
+			});
 			if (index == 0) entity.Set(Game1.Camera);
 		}
 

@@ -176,6 +176,14 @@ namespace PillowFight.Shared.Components
         }
     }
 
+    internal struct StageCollider
+    {
+        public int Top;
+        public int Bottom;
+        public int Left;
+        public int Right;
+    }
+
     internal struct Solid
     {
         public Rectangle Hitbox = new Rectangle(0, 0, 32, 32);
@@ -408,8 +416,10 @@ namespace PillowFight.Shared.Components
 
     internal struct DamageComponent
     {
-        public readonly float Damage;
+        public float Damage;
         public Color Color = Color.Green;
+
+        public DamageComponent() { }
 
         public DamageComponent(float damage, Color color)
         {
@@ -466,6 +476,7 @@ namespace PillowFight.Shared.Components
     internal struct HealthComponent
     {
         public float Health = 1;
+        public float MaxHealth = 1;
         public float DamageMultiplier = 1.0f;
         public Action<Entity> OnDamage = null;
         public Action<Entity> OnDeath = null;
@@ -478,16 +489,15 @@ namespace PillowFight.Shared.Components
         public HealthComponent(float health)
         {
             Health = health;
+            MaxHealth = health;
         }
     }
 
     internal struct HealthHUD
     {
         public readonly int Index;
-        public float Health;
-        public bool HealthChanged;
-        public Texture2D Mask;
         public Vector2 Scale = new Vector2(1, 1);
+        public Vector2 Position = new Vector2(0, 0);
         public HealthHUD(int index)
         {
             Index = index;
