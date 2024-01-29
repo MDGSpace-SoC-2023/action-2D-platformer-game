@@ -10,10 +10,10 @@
     "fileStates": {
         "DemoMap.tmx": {
             "scale": 1.4625,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 180.17094017094016,
-                "y": 192.13675213675214
+                "x": -37.26495726495726,
+                "y": 224.27350427350427
             }
         },
         "ForestTileset.tsx": {

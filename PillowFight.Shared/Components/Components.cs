@@ -542,20 +542,19 @@ namespace PillowFight.Shared.Components
 
     internal struct NoOffscreenDespawn { }
 
-    internal struct PollDistance
-    {
-        public (float threshold, Action<Entity, Entity, Vector2> action) Distance_Action;
-        public Type EntityCondition;
-    }
-
     internal struct SineGenerator
     {
         public float Frequency = 1.0f;
         public float Amplitude = 1.0f;
         public float Time = 0;
+        public Action<Entity, float> Target;
 
         public SineGenerator()
-        {
+        { }
+
+        public SineGenerator(float freq, float amp) {
+            Frequency = freq;
+            Amplitude = amp;
         }
 
         public float Value => Amplitude * MathF.Sin(Time / Frequency);

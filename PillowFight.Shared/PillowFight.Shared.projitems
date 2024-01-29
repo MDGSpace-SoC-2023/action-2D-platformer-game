@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Assets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Composer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\Components.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
@@ -29,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DebugSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DespawnSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DistanceSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\GhostMoveSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\ImpulseSystem.cs" />

@@ -44,8 +44,8 @@ namespace PillowFight.Shared.Systems
                     if (collider == null)
                     {
                         pillow = World.CreateEntity();
-                        Helper.CreateItem(pillow, new Rectangle(0, 0, 32, 32));
-                        Helper.CreatePillow(pillow);
+                        Composer.CreateItem(pillow, new Rectangle(0, 0, 32, 32));
+                        Composer.CreatePillow(pillow);
                     }
                     else pillow = collider.Value;
 

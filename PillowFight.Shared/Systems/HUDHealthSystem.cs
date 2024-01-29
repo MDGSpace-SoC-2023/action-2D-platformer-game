@@ -34,7 +34,7 @@ namespace PillowFight.Shared.Systems
 
 			_spriteBatch.Draw(_renderTarget, hud.Position,
 			new Rectangle((int)imagePosition.X, (int)imagePosition.Y, position.Hitbox.Width, position.Hitbox.Height),
-					 Color.DarkSlateGray, 0, Vector2.Zero, hud.Scale, SpriteEffects.None, 0);
+					 Color.Black, 0, Vector2.Zero, hud.Scale, SpriteEffects.None, 0);
 
 			_spriteBatch.Draw(_renderTarget, new Vector2(hud.Position.X, hud.Position.Y + hudYOffset * hud.Scale.Y),
 			new Rectangle((int)imagePosition.X, (int)(imagePosition.Y + hudYOffset), position.Hitbox.Width, position.Hitbox.Height - hudYOffset),

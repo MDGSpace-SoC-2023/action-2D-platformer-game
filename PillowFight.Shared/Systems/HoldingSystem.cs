@@ -13,8 +13,11 @@ namespace PillowFight.Shared.Systems
             ref var holding = ref entity.Get<HeldComponent>();
             ref var position = ref entity.Get<PositionComponent>();
             ref var holderPosition = ref holding.Holder.Get<PositionComponent>();
+            // ref var vel = ref entity.Get<VelocityComponent>();
+            // ref var holderVel = ref holding.Holder.Get<VelocityComponent>();
 
             position.Position = holderPosition.Position + holding.Holder.Get<HolderComponent>().HoldPosition;
+            // vel.Velocity = holderVel.Velocity;
             base.Update(state, in entity);
         }
     }
@@ -25,6 +28,10 @@ namespace PillowFight.Shared.Systems
 
         protected override void Update(float state, in Entity entity)
         {
+            // ref var holding = ref entity.Get<HeldComponent>();
+            // ref var position = ref entity.Get<PositionComponent>();
+            // ref var holderPosition = ref holding.Holder.Get<PositionComponent>();
+            // position.Position = holderPosition.Position + holding.Holder.Get<HolderComponent>().HoldPosition;
             entity.Get<Holdable>().OnHold.Invoke(entity);
             base.Update(state, in entity);
         }
