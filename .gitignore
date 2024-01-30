@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 #Tiled shit
 *.tiled*
+
+#Builds
+PillowFight.Gl/

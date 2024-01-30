@@ -28,24 +28,25 @@ namespace PillowFight.Shared.Systems
             {
                 if (holder.Holding == null)
                 {
-                    Entity? collider = null;
-                    ReadOnlySpan<Entity> holdables = World.GetEntities().With<Holdable>().AsSet().GetEntities();
-                    foreach (var holdable in holdables)
-                    {
-                        Vector2 distance = holdable.Get<PositionComponent>().Position - entity.Get<PositionComponent>().Position;
-                        if (distance.Length() < ability.PickRadius)
-                        {
-                            collider = holdable;
-                            break;
-                        }
-                    }
-
+                    // Entity? collider = null;
+                    // ReadOnlySpan<Entity> holdables = World.GetEntities().With<Holdable>().AsSet().GetEntities();
+                    // foreach (var holdable in holdables)
+                    // {
+                    //     Vector2 distance = holdable.Get<PositionComponent>().Position - entity.Get<PositionComponent>().Position;
+                    //     if (distance.Length() < ability.PickRadius)
+                    //     {
+                    //         collider = holdable;
+                    //         break;
+                    //     }
+                    // }
+                    Entity? collider = Helper.GetFirstNear(World.GetEntities().With<Holdable>(), position.Position, ability.PickRadius);
                     Entity pillow;
                     if (collider == null)
                     {
                         pillow = World.CreateEntity();
                         Composer.CreateItem(pillow, new Rectangle(0, 0, 32, 32));
                         Composer.CreatePillow(pillow);
+                        Composer.CreateFreezePillow(pillow, World);
                     }
                     else pillow = collider.Value;
 

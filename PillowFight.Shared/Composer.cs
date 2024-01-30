@@ -53,14 +53,23 @@ namespace PillowFight.Shared
 
 		public static void CreatePillow(Entity pillow)
 		{
-			var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
-			anim.Play(0);
-			pillow.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
+			// var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
+			// anim.Play(0);
+			// pillow.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
+			pillow.Set(Assets.Images["Cloud"]);
 			pillow.Set(new HealthComponent());
 			pillow.Set(new Kickable());
 			pillow.Set(new Holdable() { OnHold = Helper.PillowOnHold, OnThrow = Helper.PillowOnThrow });
 			pillow.Set(new PillowComponent() { State = Enums.PillowState.Held });
 			pillow.Set(new Solid());
+		}
+
+		public static void CreateFreezePillow(Entity pillow, World world) {
+			pillow.Get<HealthComponent>().OnDeath = (e) => Helper.ForAllNear(world.GetEntities().With<CharacterProperties>(), e.Get<PositionComponent>().Position, 32, e, 
+			(p, c) => {
+				c.Disable<VelocityComponent>();
+				c.Get<TimedActions>().Add(e => e.Set(new VelocityComponent()), 4);
+			});
 		}
 
 		public static void CreateFloatingPlatform(Entity entity, Rectangle hitbox, bool horizontal = true, bool vertical = false)

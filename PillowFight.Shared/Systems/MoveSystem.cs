@@ -9,15 +9,14 @@ namespace PillowFight.Shared.Systems
 {
     internal class MoveSystem : AEntitySetSystem<float>
     {
-        private Func<TiledMap> _map;
         private TiledMapTileLayer _collisionLayer;
         private Entity _entity;
 
-        public MoveSystem(World world, Func<TiledMap> map)
+        public MoveSystem(World world, TiledMap map)
             : base(world.GetEntities().With<PositionComponent>().With<SolidCollider>().AsSet())
         {
-            _map = map;
-            _collisionLayer = _map().GetLayer<TiledMapTileLayer>("Collision");
+            // _collisionLayer = map().GetLayer<TiledMapTileLayer>("Collision");
+            _collisionLayer = map.GetLayer<TiledMapTileLayer>("Collision");
         }
 
         protected override void Update(float deltaTime, in Entity entity)
@@ -69,7 +68,7 @@ namespace PillowFight.Shared.Systems
             {
                 velocity.Y *= -itemPhysics.Modified.YRestitution;
                 // if (solidPosition.Value.Y - position.Y < 16) position.Y = (int)solidPosition.Value.Y;
-                if (position.Y % 32 < 16) position.Y -= position.Y % 32;
+                // if (position.Y % 16 < 4) position.Y -= position.Y % 16;
                 // else if (moveX >= 0){
                 //     while (bottom) {
                 //         position.X -= itemStatus.Direction;

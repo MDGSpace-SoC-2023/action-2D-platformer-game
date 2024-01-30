@@ -74,8 +74,8 @@ namespace PillowFight.Shared
 			Camera = new Camera(GraphicsDevice.Viewport);
 			Camera.CenterOrigin();
 
-			// _activeScreen = new GameplayScreen(this, 1);
-			_activeScreen = new MenuScreen(this);
+			_activeScreen = new GameplayScreen(this, 1);
+			// _activeScreen = new MenuScreen(this);
 
 
 			base.Initialize();

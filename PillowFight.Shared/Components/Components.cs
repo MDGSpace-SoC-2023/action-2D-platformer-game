@@ -214,11 +214,6 @@ namespace PillowFight.Shared.Components
         }
     }
 
-    internal struct Hardbody
-    {
-        public Rectangle Hitbox;
-    }
-
     internal struct Holdable
     {
         public Action<Entity> OnHold;
@@ -573,5 +568,9 @@ namespace PillowFight.Shared.Components
         public float Value => Amplitude * MathF.Cos(Time / Frequency);
     }
 
-    internal struct Follower { }
+    internal struct Follower {
+        public Entity Target;
+        public float Velocity;
+        public bool VelocityMonitor;
+    }
 }

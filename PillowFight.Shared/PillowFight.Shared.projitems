@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DamageSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DebugSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\DespawnSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Systems\FollowingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\GhostMoveSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HoldingSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\HUDHealthSystem.cs" />

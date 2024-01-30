@@ -25,7 +25,8 @@ namespace PillowFight.Shared
     {
         public void Load(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            // Assets.Images["SMBTilesheet"] = content.Load<Texture2D>("Sprites/SMBTilesheet");
+            Assets.Images["Tilesheet"] = content.Load<Texture2D>("Sprites/smb3");
+            Assets.Images["Cloud"] = FromTilesheet(1, 3, graphicsDevice);
             Assets.Fonts["Arial"] = content.Load<SpriteFont>("Fonts/Arial");
             // Assets.Images["Mario3Sheet"] = content.Load<Texture2D>("Sprites/PlumberFellasSpritesheet");
             Assets.Aseprites["Mario"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Mario3"));
@@ -39,6 +40,15 @@ namespace PillowFight.Shared
             Assets.UIProjects["Menu"] = Project.LoadFromXml(data);
 
             // Assets.Effects["LSD"].Parameters["dimensions"].SetValue(new Vector2(640, 360));
+        }
+        private Texture2D FromTilesheet(int x, int y, GraphicsDevice gd) {
+            int xSize = x * 17 + 1;
+            int ySize = y * 17 + 1;
+            Texture2D slice = new Texture2D(gd, 16, 16);
+            Color[] data = new Color[16 *  16];
+            Assets.Images["Tilesheet"].GetData(0, new Rectangle(xSize, ySize, 16, 16), data, 0, 16*16);
+            slice.SetData(data);
+            return slice;
         }
     }
 }

@@ -51,11 +51,11 @@ namespace PillowFight.Shared.Screens
 				new PillowSystem(_world),
                 new CharacterControlSystem(_world),
                 new PhysicsSystem(_world),
-                new MoveSystem(_world, () => _map),
+                new MoveSystem(_world, _map),
 				new GhostMoveSystem(_world),
 				new HoldingSystem(_world),
                 new AnimationUpdateSystem(_world),
-                new CameraSystem(_world),
+                new CameraSystem(_world, _map),
                 new DamageSystem(_world),
 				new DespawnSystem(_world),
 				new KillSystem(_world)
@@ -116,7 +116,7 @@ namespace PillowFight.Shared.Screens
         public override void DrawHUD(GameTime gameTime)
         {
 			_hudHealthSystem.Update(gameTime.GetElapsedSeconds());
-			_debugSystem.Update(gameTime.GetElapsedSeconds());
+			// _debugSystem.Update(gameTime.GetElapsedSeconds());
         }
     }
 }

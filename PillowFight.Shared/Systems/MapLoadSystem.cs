@@ -16,6 +16,10 @@ namespace PillowFight.Shared.Systems
 		{
 			_map = map;
 			_spriteLayer = _map.GetLayer<TiledMapTileLayer>("Sprites");
+			// _spriteLayer.GetTile(1, 1).
+			_map.GetLayer<TiledMapObjectLayer>("mnij").Objects[0].Properties["sdf"] = "jello";
+			_map.GetLayer<TiledMapTileLayer>("SHF").TryGetTile(1, 1, out var tile);
+			// tile.Value.
 		}
 
 		protected override void Update(float state, ref Camera component)

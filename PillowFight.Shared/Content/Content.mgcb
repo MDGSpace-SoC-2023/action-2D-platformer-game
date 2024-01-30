@@ -73,10 +73,10 @@
 /processorParam:TextureFormat=Color
 /build:Maps/smb3.png
 
-#begin Maps/smb3.tsx
+#begin Maps/SMB3.tsx
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
-/build:Maps/smb3.tsx
+/build:Maps/SMB3.tsx
 
 #begin Maps/Tileset.png
 /importer:TextureImporter
@@ -109,4 +109,16 @@
 /importer:AsepriteFileContentImporter
 /processor:AsepriteFileContentProcessor
 /build:Sprites/Mario3.aseprite
+
+#begin Sprites/smb3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/smb3.png
 
