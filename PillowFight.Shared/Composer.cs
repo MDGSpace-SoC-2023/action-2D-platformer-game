@@ -42,6 +42,7 @@ namespace PillowFight.Shared
 
 		public static void CreatePlayer(Entity entity, int index)
 		{
+			entity.Set(new Solid());
 			entity.Set(new HealthHUD(index)
 			{
 				Scale = new Vector2(2, 2),
@@ -90,5 +91,7 @@ namespace PillowFight.Shared
 					}
 				});
 		}
+
+		// public static void SetColliders(Vector2)
 	}
 }

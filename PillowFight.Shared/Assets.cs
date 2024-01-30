@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Aseprite;
@@ -31,9 +32,13 @@ namespace PillowFight.Shared
             Assets.Aseprites["Luigi"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Luigi"));
             Assets.Aseprites["Cloud"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Cloud"));
             Assets.Effects["HUDHealthShader"] = content.Load<Effect>("Effects/HUDHealth");
+            Assets.Effects["Whiteout"] = content.Load<Effect>("Effects/Whiteout");
+            Assets.Effects["LSD"] = content.Load<Effect>("Effects/LSD");
             Assets.Maps["Lv1"] = content.Load<TiledMap>("Maps/Tutorial");
             string data = File.ReadAllText("PillowFight.Shared/Content/UI/Menu.xmml");
             Assets.UIProjects["Menu"] = Project.LoadFromXml(data);
+
+            // Assets.Effects["LSD"].Parameters["dimensions"].SetValue(new Vector2(640, 360));
         }
     }
 }

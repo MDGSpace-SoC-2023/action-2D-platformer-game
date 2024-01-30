@@ -27,6 +27,18 @@
 /processorParam:DebugMode=Auto
 /build:Effects/HUDHealthShader.fx
 
+#begin Effects/LSD.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/LSD.fx
+
+#begin Effects/Whiteout.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/Whiteout.fx
+
 #begin Fonts/Arial.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

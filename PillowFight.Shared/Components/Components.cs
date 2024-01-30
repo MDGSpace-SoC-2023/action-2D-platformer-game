@@ -154,14 +154,14 @@ namespace PillowFight.Shared.Components
 
         public bool Colliding => Top || Bottom || Left || Right;
 
-        public Vector2[] TopColliders = new Vector2[] { new Vector2(16, 0) };
-        public Vector2[] BottomColliders = new Vector2[] { new Vector2(2, 32), new Vector2(30, 32) };
+        public Vector2[] TopColliders = new Vector2[] { new Vector2(8, 0) };
+        public Vector2[] BottomColliders = new Vector2[] { new Vector2(1, 16), new Vector2(15, 16) };
         public Vector2[] LeftColliders = new Vector2[] {
-            new Vector2(0, 16)
+            new Vector2(0, 8)
             // , new Vector2(0, 24)
         };
         public Vector2[] RightColliders = new Vector2[] {
-            new Vector2(32, 16)
+            new Vector2(16, 8)
             // , new Vector2(32, 24) 
         };
 
@@ -182,6 +182,18 @@ namespace PillowFight.Shared.Components
         public int Bottom;
         public int Left;
         public int Right;
+
+        public bool Colliding => Top != 0 && Bottom != 0 && Left != 0 && Right != 0;
+    }
+
+    internal struct ItemCollider
+    {
+        public Entity? Top;
+        public Entity? Bottom;
+        public Entity? Left;
+        public Entity? Right;
+
+        public bool Colliding => Top.HasValue && Bottom.HasValue && Left.HasValue && Right.HasValue;
     }
 
     internal struct Solid
@@ -302,8 +314,8 @@ namespace PillowFight.Shared.Components
         public float YRestitution = 0.0f;
 
         public float MinXVelocity = .5f;
-        public float MaxXVelocity = 100.0f;
-        public float MaxYVelocity = 100.0f;
+        public float MaxXVelocity = 20.0f;
+        public float MaxYVelocity = 20.0f;
 
         public ItemPhysics() { }
 
@@ -321,15 +333,15 @@ namespace PillowFight.Shared.Components
 
     internal struct CharacterPhysics
     {
-        public float RunVelocity = 3.0f;
+        public float RunVelocity = 2.5f;
         // public float AirRunVelocity = 2.5f;
-        public float JumpVelocity = 7.0f;
+        public float JumpVelocity = 5.0f;
         public float RunAcceleration = 35.0f;
         public float AirRunAcceleration = 35.0f;
 
         public float JumpGravityMultiplier = 0.5f;
 
-        public float KickImpulse = 12.0f;
+        public float KickImpulse = 7.0f;
 
 
         public CharacterPhysics() { }
@@ -552,11 +564,14 @@ namespace PillowFight.Shared.Components
         public SineGenerator()
         { }
 
-        public SineGenerator(float freq, float amp) {
+        public SineGenerator(float freq, float amp)
+        {
             Frequency = freq;
             Amplitude = amp;
         }
 
         public float Value => Amplitude * MathF.Cos(Time / Frequency);
     }
+
+    internal struct Follower { }
 }

@@ -62,7 +62,7 @@ namespace PillowFight.Shared.Screens
             );
 
             player = _world.CreateEntity();
-			Composer.CreateItem(player, new Rectangle(64, 64, 32, 32));
+			Composer.CreateItem(player, new Rectangle(64, 64, 16, 16));
 			Composer.CreateCharacter(player);
 			Composer.CreatePlayer(player, 0);
             
@@ -80,7 +80,7 @@ namespace PillowFight.Shared.Screens
 
 			var platform = _world.CreateEntity();
 			// Composer.CreateItem(platform, new Rectangle (128, 256, 32, 32));
-			Composer.CreateFloatingPlatform(platform, new Rectangle(128, 256, 32, 32) );
+			Composer.CreateFloatingPlatform(platform, new Rectangle(128, 256, 16, 16) );
 			var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
 			anim.Play(0);
 			platform.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });

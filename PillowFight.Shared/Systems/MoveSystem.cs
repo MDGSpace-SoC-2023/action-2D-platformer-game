@@ -17,7 +17,7 @@ namespace PillowFight.Shared.Systems
             : base(world.GetEntities().With<PositionComponent>().With<SolidCollider>().AsSet())
         {
             _map = map;
-            _collisionLayer = _map().GetLayer<TiledMapTileLayer>("collision");
+            _collisionLayer = _map().GetLayer<TiledMapTileLayer>("Collision");
         }
 
         protected override void Update(float deltaTime, in Entity entity)
@@ -84,7 +84,7 @@ namespace PillowFight.Shared.Systems
                     if (bottom)
                     {
                         velocity.Y *= -itemPhysics.Modified.YRestitution;
-                        if (position.Y % 32 < 16) position.Y -= position.Y % 32;
+                        // if (position.Y % 16 < 4) position.Y -= position.Y % 4;
                         // if (solidPosition.Value.Y - position.Y < 8) position.Y = (int)solidPosition.Value.Y;
                         // else if (position.Y + solidColliders.BottomColliders[0].Y > solidPosition.Value.Y) {
                         // position.X = (int)(solidPosition.Value.X - solidColliders.RightColliders[0].X);
@@ -176,7 +176,7 @@ namespace PillowFight.Shared.Systems
             foreach (var offset in offsets)
             {
                 Vector2 Position = position + offset;
-                _collisionLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
+                _collisionLayer.TryGetTile((ushort)(Position.X / 16), (ushort)(Position.Y / 16), out var tile);
                 if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return true;
                 else foreach (var solid in solids)
                     {
@@ -192,7 +192,7 @@ namespace PillowFight.Shared.Systems
             foreach (var offset in offsets)
             {
                 Vector2 Position = position + offset;
-                _collisionLayer.TryGetTile((ushort)(Position.X / 32), (ushort)(Position.Y / 32), out var tile);
+                _collisionLayer.TryGetTile((ushort)(Position.X / 16), (ushort)(Position.Y / 16), out var tile);
                 if (tile.HasValue && tile.Value.GlobalIdentifier != 0) return new Vector2(Position.X - Position.X % 32, Position.Y - Position.Y % 32);
                 else foreach (var solid in solids)
                     {
