@@ -28,27 +28,34 @@ namespace PillowFight.Shared.Systems
             Vector2 targetPos = Vector2.Lerp(position.Position + velocity.Velocity * VelocityCamera, camera.Position, 0.55f);
 
             foreach (var bound in _cameraBounds[0]) {
-                int xDiff = (int)targetPos.X/16 - bound.X;
-                int yDiff = (int)targetPos.Y/16 - bound.Y;
+                int xDiff = (int)(targetPos.X - camera.Viewport.Width/2)/16 - bound.X;
+                // int yDiff = (int)targetPos.Y/16 - bound.Y;
                 // if (xDiff == 0 && yDiff == 0) 
                 targetPos.X = Math.Max(targetPos.X, (bound.X) * 16); 
             }
 
             foreach (var bound in _cameraBounds[1]) {
-                int xDiff = (int)(targetPos.X + camera.Viewport.Width)/16 - bound.X;
+                // int xDiff = (int)(targetPos.X + camera.Viewport.Width)/16 - bound.X;
                 int yDiff = (int)(targetPos.Y + camera.Viewport.Height)/16 - bound.Y;
                 // if (xDiff == 0 && yDiff == 0)
                  targetPos.X = Math.Min(targetPos.X, (bound.X) * 16); 
             }
 
             foreach (var bound in _cameraBounds[2]) {
-                int xDiff = (int)(targetPos.X + camera.Viewport.Width)/16 - bound.X;
+                // int xDiff = (int)(targetPos.X + camera.Viewport.Width)/16 - bound.X;
                 int yDiff = (int)(targetPos.Y + camera.Viewport.Height)/16 - bound.Y;
                 // if (xDiff == 0 && yDiff == 0)
                  targetPos.Y = Math.Min(targetPos.Y, (bound.Y) * 16); 
             }
+
+            foreach (var bound in _cameraBounds[3]) {
+                int xDiff = (int)(targetPos.X + camera.Viewport.Width)/16 - bound.X;
+                // int yDiff = (int)(targetPos.Y + camera.Viewport.Height)/16 - bound.Y;
+                // if (xDiff == 0 && yDiff == 0)
+                 targetPos.Y = Math.Min(targetPos.Y, (bound.Y) * 16); 
+            }
             camera.Position = targetPos;
-            // camera.CenterOrigin();
+            camera.CenterOrigin();
             base.Update(state, in entity);
         }
 
@@ -58,10 +65,10 @@ namespace PillowFight.Shared.Systems
             {
                 switch (tile.GlobalIdentifier)
                 {
-                    case 76: _cameraBounds[0].Add((tile.X, tile.Y)); break;
-                    case 74: _cameraBounds[1].Add((tile.X, tile.Y)); break;
-                    case 6: _cameraBounds[2].Add((tile.X, tile.Y)); break;
-                    case 4: _cameraBounds[3].Add((tile.X, tile.Y)); break;
+                    case 950: _cameraBounds[0].Add((tile.X, tile.Y)); break;
+                    case 951: _cameraBounds[1].Add((tile.X, tile.Y)); break;
+                    case 952: _cameraBounds[2].Add((tile.X, tile.Y)); break;
+                    case 949: _cameraBounds[3].Add((tile.X, tile.Y)); break;
                 }
             }
         }

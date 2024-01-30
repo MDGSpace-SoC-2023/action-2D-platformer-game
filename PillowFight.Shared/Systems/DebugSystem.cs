@@ -12,7 +12,7 @@ namespace PillowFight.Shared.Systems
 	{
 
 		private GraphicsDevice _graphicsDevice;
-		public SpriteBatch _spriteBatch;
+		private SpriteBatch _spriteBatch;
 
 		public DebugSystem(World world, SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
 			: base(world.GetEntities().With<DebugComponent>().AsSet())

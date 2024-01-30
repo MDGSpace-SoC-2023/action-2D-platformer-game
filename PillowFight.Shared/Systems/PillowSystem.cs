@@ -48,12 +48,26 @@ namespace PillowFight.Shared.Systems
             };
             a.Invoke();
 
+            var characters = World.GetEntities().With<CharacterProperties>().AsSet().GetEntities();
+            ref var position = ref entity.Get<PositionComponent>();
+            foreach (var character in characters)
+            {
+                Vector2 distance = character.Get<PositionComponent>().Position - position.Position;
+                if (distance.Length() < pillow.CharacterExplosionRadius)
+                {
+                    if (pillow.OnExplode != null) pillow.OnExplode.Invoke(character);
+                    character.Set(new DamageComponent(pillow.ExplosionDamage, render.Color));
+                    character.Set(new ImpulseComponent(pillow.ExplosionImpulse * distance.NormalizedCopy()));
+                    shouldDie = true;
+                    break;
+                }
+            }
             if (pillow.State == Projectile)
             {
                 // var colliders = entity.Get<Colliders>();
                 var solidCollider = entity.Get<SolidCollider>();
-                var characters = World.GetEntities().With<CharacterProperties>().AsSet().GetEntities();
-                ref var position = ref entity.Get<PositionComponent>();
+                // var characters = World.GetEntities().With<CharacterProperties>().AsSet().GetEntities();
+                // ref var position = ref entity.Get<PositionComponent>();
 
                 if (solidCollider.Colliding)
                 {

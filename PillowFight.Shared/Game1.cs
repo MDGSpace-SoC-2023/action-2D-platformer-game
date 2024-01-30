@@ -7,6 +7,7 @@ using MonoGame.Extended.Screens;
 using MonoGame.Extended.Tiled.Renderers;
 using Myra;
 using Myra.Graphics2D.UI;
+using PillowFight.Shared.Components;
 using PillowFight.Shared.Screens;
 
 namespace PillowFight.Shared
@@ -14,7 +15,7 @@ namespace PillowFight.Shared
 	public class Game1 : Game
 	{
 		private GraphicsDeviceManager _graphics;
-		public SpriteBatch SpriteBatch;
+		internal SpriteBatch SpriteBatch;
 
 		public TiledMapRenderer TiledMapRenderer;
 		public static Camera Camera;
@@ -25,7 +26,11 @@ namespace PillowFight.Shared
 		private EffectParameter LSDTime;
 
 		private readonly ScreenManager _screenManager;
-		private BaseScreen _activeScreen;
+		internal BaseScreen ActiveScreen;
+		internal GameplayScreen GameplayScreen;
+		internal MenuScreen MenuScreen;
+		internal LevelSelectScreen LevelSelectScreen;
+		internal PauseScreen PauseScreen;
 
 		private Desktop _desktop;
 
@@ -38,12 +43,14 @@ namespace PillowFight.Shared
 		private float outputAspect;
 		private float preferredAspect;
 
+		internal InputComponent Input = new();
+
 		public Game1()
 		{
 			_graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
-			IsMouseVisible = true;
-			// Graphics.IsFullScreen = true;
+			// IsMouseVisible = true;
+			_graphics.IsFullScreen = true;
 
 			_graphics.PreferredBackBufferWidth = Enums.Screen.WidthDefault;
 			_graphics.PreferredBackBufferHeight = Enums.Screen.HeightDefault;
@@ -74,8 +81,10 @@ namespace PillowFight.Shared
 			Camera = new Camera(GraphicsDevice.Viewport);
 			Camera.CenterOrigin();
 
-			_activeScreen = new GameplayScreen(this, 1);
-			// _activeScreen = new MenuScreen(this);
+			GameplayScreen = new(this, 3);
+			MenuScreen = new(this);
+			PauseScreen = new(this);
+			ActiveScreen = MenuScreen;
 
 
 			base.Initialize();
@@ -86,33 +95,35 @@ namespace PillowFight.Shared
 
 		protected override void Update(GameTime gameTime)
 		{
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-				Exit();
+			// if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+				// Exit();
 
-			_activeScreen.Update(gameTime);
+			Input.PreviousState = Input.CurrentState;
+			Input.CurrentState = Keyboard.GetState();
+			ActiveScreen.Update(gameTime);
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
-			if (_activeScreen.CanDrawMap)
+			if (ActiveScreen.CanDrawMap)
 			{
 				DrawStart(_backgroundTarget, Color.Transparent);
-				_activeScreen.DrawMap();
+				ActiveScreen.DrawMap();
 				SpriteBatch.End();
 			}
 
-			if (_activeScreen.CanDrawSprites)
+			if (ActiveScreen.CanDrawSprites)
 			{
 				DrawStart(_entityTarget, Color.Transparent);
-				_activeScreen.DrawSprites(gameTime.GetElapsedSeconds());
+				ActiveScreen.DrawSprites(gameTime.GetElapsedSeconds());
 				SpriteBatch.End();
 			}
 
-			if (_activeScreen.CanDrawHUD)
+			if (ActiveScreen.CanDrawHUD)
 			{
 				DrawStart(_hudTarget, Color.Transparent);
-				_activeScreen.DrawHUD(gameTime);
+				ActiveScreen.DrawHUD(gameTime);
 				DrawEnd(gameTime);
 			}
 		}
@@ -174,7 +185,7 @@ namespace PillowFight.Shared
 
 			this.GraphicsDevice.SetRenderTarget(null);
 			this._graphics.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 1.0f, 0);
-			// LSDTime.SetValue(gameTime.GetElapsedSeconds());
+			LSDTime.SetValue((float)(gameTime.TotalGameTime.TotalMilliseconds/1000));
 
 			this.SpriteBatch.Begin(
 				SpriteSortMode.Immediate,
@@ -190,7 +201,8 @@ namespace PillowFight.Shared
 				BlendState.AlphaBlend,
 				SamplerState.PointClamp
 				);
-			Assets.Effects["Whiteout"].CurrentTechnique.Passes[0].Apply();
+			SpriteBatch.Draw(_backgroundTarget,dst,  Color.White);
+			// Assets.Effects["Whiteout"].CurrentTechnique.Passes[0].Apply();
 			SpriteBatch.Draw(_entityTarget, dst,  Color.White);
 			this.SpriteBatch.End();
 

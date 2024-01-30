@@ -27,19 +27,19 @@ namespace PillowFight.Shared
         {
             Assets.Images["Tilesheet"] = content.Load<Texture2D>("Sprites/smb3");
             Assets.Images["Cloud"] = FromTilesheet(1, 3, graphicsDevice);
+            Assets.Images["Box"] = content.Load<Texture2D>("UI/Setting menu");
+            Assets.Images["Button"] = content.Load<Texture2D>("UI/Button");
+            Assets.Images["ButtonPress"] = content.Load<Texture2D>("UI/ButtonPress");
             Assets.Fonts["Arial"] = content.Load<SpriteFont>("Fonts/Arial");
             // Assets.Images["Mario3Sheet"] = content.Load<Texture2D>("Sprites/PlumberFellasSpritesheet");
             Assets.Aseprites["Mario"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Mario3"));
             Assets.Aseprites["Luigi"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Luigi"));
             Assets.Aseprites["Cloud"] = SpriteSheetProcessor.Process(graphicsDevice, content.Load<AsepriteFile>("Sprites/Cloud"));
-            Assets.Effects["HUDHealthShader"] = content.Load<Effect>("Effects/HUDHealth");
+            // Assets.Effects["HUDHealthShader"] = content.Load<Effect>("Effects/HUDHealth");
             Assets.Effects["Whiteout"] = content.Load<Effect>("Effects/Whiteout");
             Assets.Effects["LSD"] = content.Load<Effect>("Effects/LSD");
-            Assets.Maps["Lv1"] = content.Load<TiledMap>("Maps/Tutorial");
+            Assets.Maps["Lv1"] = content.Load<TiledMap>("Maps/Tutorial3");
             string data = File.ReadAllText("PillowFight.Shared/Content/UI/Menu.xmml");
-            Assets.UIProjects["Menu"] = Project.LoadFromXml(data);
-
-            // Assets.Effects["LSD"].Parameters["dimensions"].SetValue(new Vector2(640, 360));
         }
         private Texture2D FromTilesheet(int x, int y, GraphicsDevice gd) {
             int xSize = x * 17 + 1;

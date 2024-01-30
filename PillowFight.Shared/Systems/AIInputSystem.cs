@@ -58,7 +58,7 @@ namespace PillowFight.Shared.Systems
                 if (AI.LastThrowTime < 0)
                 {
                     keys.Add(Keys.J);
-                    // keys.Add(Keys.K);
+                    keys.Add(Keys.K);
                     keys.Add(sign == -1 ? Keys.A : Keys.D);
                     AI.LastThrowTime = AI.ThrowDelay;
                 }

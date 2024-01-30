@@ -18,6 +18,7 @@ namespace PillowFight.Shared
 			entity.Disable<CollisionComponent>();
 			entity.Disable<Colliders>();
 			entity.Disable<HolderComponent>();
+			entity.Disable<PillowComponent>();
 		}
 
 		public static void PillowOnThrow(Entity pillow)
@@ -36,6 +37,8 @@ namespace PillowFight.Shared
 			pillow.Enable<ModifiableComponent<ItemPhysics>>();
 			pillow.Enable<CollisionComponent>();
 			pillow.Enable<HolderComponent>();
+			// pillow.Enable<PillowComponent>();
+            pillow.Get<TimedActions>().Add(e => e.Enable<PillowComponent>(),0.125f);
 		}
 
 		public static Entity? GetFirstNear(EntityQueryBuilder builder, Vector2 position, float distance)

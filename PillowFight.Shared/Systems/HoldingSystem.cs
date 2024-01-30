@@ -43,7 +43,7 @@ namespace PillowFight.Shared.Systems
 
         protected override void Update(float state, in Entity entity)
         {
-            // entity.Get<TimedActions>().Add(e => e.Get<CollisionIgnore>().entities.Clear(),0.125f);
+            // entity.Get<TimedActions>().Add(e => e.Get<CollisionIgnore>().IgnoreEntity.Clear(),0.125f);
             entity.Get<Holdable>().OnThrow.Invoke(entity);
             base.Update(state, in entity);
         }

@@ -53,10 +53,9 @@ namespace PillowFight.Shared
 
 		public static void CreatePillow(Entity pillow)
 		{
-			// var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
-			// anim.Play(0);
-			// pillow.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
-			pillow.Set(Assets.Images["Cloud"]);
+			var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
+			anim.Play(0);
+			pillow.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
 			pillow.Set(new HealthComponent());
 			pillow.Set(new Kickable());
 			pillow.Set(new Holdable() { OnHold = Helper.PillowOnHold, OnThrow = Helper.PillowOnThrow });
@@ -101,6 +100,20 @@ namespace PillowFight.Shared
 				});
 		}
 
+		public static void CreateEnemy(Entity ai, int index) {
+			
+            Composer.CreateItem(ai, new Rectangle(128 + 64 * index, 128, 16, 16));
+            Composer.CreateCharacter(ai);
+            ai.Set(new AIComponent());
+            ai.Set(new HealthHUD(1) { Scale = new Vector2(2, 2), Position = new Vector2(600 - 40 * index, 0)});
+            ai.Set(new AsepriteSprite {sprites = new AnimatedSprite[] {
+				Assets.Aseprites["Mario"].CreateAnimatedSprite("Stand"), 
+				Assets.Aseprites["Mario"].CreateAnimatedSprite("Jump"), 
+				Assets.Aseprites["Mario"].CreateAnimatedSprite("Die"),
+				Assets.Aseprites["Mario"].CreateAnimatedSprite("Turn"), 
+				Assets.Aseprites["Mario"].CreateAnimatedSprite("Run") 
+			}});
+		}
 		// public static void SetColliders(Vector2)
 	}
 }

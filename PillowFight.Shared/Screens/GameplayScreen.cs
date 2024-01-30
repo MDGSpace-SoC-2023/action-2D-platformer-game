@@ -24,10 +24,9 @@ namespace PillowFight.Shared.Screens
 
         private World _world;
         public Entity player;
-        public AnimatedSprite playerSprite;
         public GameplayScreen(Game game, int level) : base(game, true, true, true)
         { 
-			_map = Assets.Maps["Lv"+level.ToString()];
+			_map = Assets.Maps["Lv1"];
 			_tiledMapRenderer = new TiledMapRenderer(Game.GraphicsDevice, _map);
 			
             _world = new World();
@@ -69,6 +68,7 @@ namespace PillowFight.Shared.Screens
             player.Set(new AbilityComponent(true, true, true, true));
             player.Set(new PlayerInputSource(Keyboard.GetState));
             
+            _world.Set(new GameState());
             player.Set(new DebugComponent());
             player.Set(new AsepriteSprite {sprites = new AnimatedSprite[] {
 				Assets.Aseprites["Mario"].CreateAnimatedSprite("Stand"), 
@@ -78,12 +78,28 @@ namespace PillowFight.Shared.Screens
 				Assets.Aseprites["Mario"].CreateAnimatedSprite("Run") 
 			}});
 
-			var platform = _world.CreateEntity();
+            for (int i = 0; i < level; i++) {
+                var ai = _world.CreateEntity();
+                Composer.CreateEnemy(ai,0);
+            }
+   //          Composer.CreateItem(ai, new Rectangle(128, 128, 16, 16));
+   //          Composer.CreateCharacter(ai);
+   //          ai.Set(new AIComponent());
+   //          ai.Set(new HealthHUD(1) { Scale = new Vector2(2, 2), Position = new Vector2(600, 0)});
+   //          ai.Set(new AsepriteSprite {sprites = new AnimatedSprite[] {
+			// 	Assets.Aseprites["Mario"].CreateAnimatedSprite("Stand"), 
+			// 	Assets.Aseprites["Mario"].CreateAnimatedSprite("Jump"), 
+			// 	Assets.Aseprites["Mario"].CreateAnimatedSprite("Die"),
+			// 	Assets.Aseprites["Mario"].CreateAnimatedSprite("Turn"), 
+			// 	Assets.Aseprites["Mario"].CreateAnimatedSprite("Run") 
+			// }});
+			// var platform = _world.CreateEntity();
 			// Composer.CreateItem(platform, new Rectangle (128, 256, 32, 32));
-			Composer.CreateFloatingPlatform(platform, new Rectangle(128, 256, 16, 16) );
-			var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
-			anim.Play(0);
-			platform.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
+			// Composer.CreateFloatingPlatform(platform, new Rectangle(128, 256, 16, 16) );
+			// var anim = Assets.Aseprites["Cloud"].CreateAnimatedSprite("Cloud");
+			// anim.Play(0);
+			// platform.Set(new AsepriteSprite() { sprites = new AnimatedSprite[] { anim } });
+            // platform.Set(Assets.Images["Cloud"]);
 
             Load();
         }
@@ -96,6 +112,9 @@ namespace PillowFight.Shared.Screens
 
         public override void Update(GameTime gameTime)
         {
+            if (Game.Input.WasKeyUp(Keys.Escape)) {
+                Game.ActiveScreen = Game.PauseScreen;
+            }
             _mainSystem.Update(gameTime.GetElapsedSeconds());
             _tiledMapRenderer.Update(gameTime);
         }

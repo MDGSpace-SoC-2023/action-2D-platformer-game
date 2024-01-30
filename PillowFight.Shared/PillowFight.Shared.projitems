@@ -17,8 +17,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Screens\BaseScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Screens\GameplayScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Screens\MenuScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\PauseScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Screens\LevelSelectScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\AbilitySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\AIInputSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Systems\AnimationUpdateSystem.cs" />

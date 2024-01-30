@@ -1,9 +1,11 @@
 ﻿using DefaultEcs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Aseprite.Sprites;
 using MonoGame.Extended;
-using Myra.Graphics2D.UI;
+// using Myra.Graphics2D.UI;
+using PillowFight.Shared.Components;
 
 namespace PillowFight.Shared.Screens
 {
@@ -13,21 +15,31 @@ namespace PillowFight.Shared.Screens
 
 		private World _world;
 		private AnimatedSprite[] _player;
-		private Desktop _desktop;
+		// private Desktop _desktop;
 		private float _timer;
 		private float _duration = 2;
 		private int _index;
-		private int _padding = 4;
+		// private int _padding = 4;
+		private Texture2D panel;
 		private Color[] _colors = new Color[] {
 			Color.Aqua, Color.Green, Color.Orange, Color.Red, Color.Gray
 		};
+		private Button[] _buttons;
 
 		public MenuScreen(Game game) : base(game, true, true, true)
 		{
-			_desktop = new();
-			_desktop.Root = Assets.UIProjects["Menu"].Root;
+			// _desktop = new();
+			// _desktop.Root = Assets.UIProjects["Menu"].Root;
+			panel = Assets.Images["Box"];
+			_buttons = new Button[3];
+			_buttons[0] = new Button(Assets.Images["Button"], Assets.Images["ButtonPress"], new Vector2(10, 10), () => Game.ActiveScreen = Game.GameplayScreen = new GameplayScreen(Game, 3), "Play");
+			_buttons[1] = new Button(Assets.Images["Button"],Assets.Images["ButtonPress"] , new Vector2(10, 50), () => Game.ActiveScreen = Game.GameplayScreen, "Resume");
+			_buttons[2] = new Button(Assets.Images["Button"],Assets.Images["ButtonPress"] , new Vector2(10, 100), () => Game.Exit(), "Exit");
 
 			_world = new World();
+			var input = _world.CreateEntity();
+			input.Set(new PlayerInputSource(Keyboard.GetState));
+			input.Set(new InputComponent());
 			
             _player = new AnimatedSprite[] {
 				Assets.Aseprites["Mario"].CreateAnimatedSprite("Stand"), 
@@ -76,6 +88,9 @@ namespace PillowFight.Shared.Screens
 				_index++;
 				_index %= 5;
 			}
+			if (Game.Input.WasKeyUp(Keys.Up)) Button.MoveFocus(_buttons, true);
+			if (Game.Input.WasKeyUp(Keys.Down)) Button.MoveFocus(_buttons, false);
+			Button.UpdateAll(_buttons, gameTime.GetElapsedSeconds(),Game.Input.WasKeyUp(Keys.Enter));
 		}
 
 		public void Draw(GameTime gameTime)
@@ -100,6 +115,8 @@ namespace PillowFight.Shared.Screens
 
 		public override void DrawHUD(GameTime gameTime)
 		{
+			Game.SpriteBatch.Draw(panel, Vector2.Zero, null, Color.White, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+			Button.DrawAll(_buttons, Game.SpriteBatch);
 			// _desktop.Render();
 		}
 	}

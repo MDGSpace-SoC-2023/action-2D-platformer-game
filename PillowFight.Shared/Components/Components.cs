@@ -280,8 +280,8 @@ namespace PillowFight.Shared.Components
 
         public float KickRadius = 64.0f;
         public float PickRadius = 64.0f;
-        public float ThrowImpulse = 12.0f;
-        public float KickImpulse = 12.0f;
+        public float ThrowImpulse = 0.1f;
+        public float KickImpulse = .1f;
 
         public AbilityComponent() { }
         public AbilityComponent(
@@ -545,7 +545,9 @@ namespace PillowFight.Shared.Components
 
     internal struct KillComponent { }
 
-    internal struct GameState { }
+    internal struct GameState { 
+        int Kills;
+    }
 
     internal struct NoOffscreenDespawn { }
 

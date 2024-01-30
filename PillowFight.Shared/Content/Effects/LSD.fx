@@ -7,9 +7,9 @@
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
+extern float time;
 Texture2D SpriteTexture;
 sampler s0;
-float time;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -26,8 +26,12 @@ struct VertexShaderOutput
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 color = tex2D(s0, input.TextureCoordinates);
-	float2 uv = input.TextureCoordinates / float2(640, 360); 
+	// color = 1-color;
+	float2 uv = input.TextureCoordinates ;
+	// float2(640, 360); 
     float3 col = 0.5 + 0.5*cos(time+uv.xyx+float3(0,2,4));
+	color.rgb = col.rgb;
+	// color.a = 1 - col.a;
 	return color;
 
 }
