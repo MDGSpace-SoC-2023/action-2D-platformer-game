@@ -53,7 +53,7 @@ namespace PillowFight.Shared
 			_graphics.ApplyChanges();
 
 			_screenManager = new ScreenManager();
-			Components.Add(_screenManager);
+			// Components.Add(_screenManager);
 		}
 
 		protected override void Initialize()
@@ -76,8 +76,6 @@ namespace PillowFight.Shared
 
 			// _activeScreen = new GameplayScreen(this, 1);
 			_activeScreen = new MenuScreen(this);
-			// _screenManager.LoadScreen(_activeScreen);
-			_screenManager.LoadScreen(new MenuScreen(this));
 
 
 			base.Initialize();
@@ -192,7 +190,7 @@ namespace PillowFight.Shared
 				BlendState.AlphaBlend,
 				SamplerState.PointClamp
 				);
-			// Assets.Effects["Whiteout"].CurrentTechnique.Passes[0].Apply();
+			Assets.Effects["Whiteout"].CurrentTechnique.Passes[0].Apply();
 			SpriteBatch.Draw(_entityTarget, dst,  Color.White);
 			this.SpriteBatch.End();
 

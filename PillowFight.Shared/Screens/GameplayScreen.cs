@@ -20,7 +20,7 @@ namespace PillowFight.Shared.Screens
 		private DebugSystem _debugSystem;
         private SequentialSystem<float> _mainSystem;
 
-        private new Game1 Game => (Game1)base.Game;
+        // private new Game1 Game => (Game1)base.Game;
 
         private World _world;
         public Entity player;
@@ -28,7 +28,7 @@ namespace PillowFight.Shared.Screens
         public GameplayScreen(Game game, int level) : base(game, true, true, true)
         { 
 			_map = Assets.Maps["Lv"+level.ToString()];
-			_tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _map);
+			_tiledMapRenderer = new TiledMapRenderer(Game.GraphicsDevice, _map);
 			
             _world = new World();
             _entityRenderSystem = new AsepriteRenderer(_world, Game.SpriteBatch, Game.GraphicsDevice, Game1.Camera);
@@ -100,7 +100,7 @@ namespace PillowFight.Shared.Screens
             _tiledMapRenderer.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {}
 
         public override void DrawMap()
